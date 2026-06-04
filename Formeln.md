@@ -12,6 +12,13 @@ Dauerhafte Eigenschaften eines Elektrofahrzeugs, z. B
 - Batteriekapazität
 - durchschnittlichen Basisverbrauch.
 
+### Fahrzeugparameter
+
+| Parameter         | Symbol      | Einheit   | Beschreibung                 |
+|---------------    |--------     |---------  |--------------                |
+| Batteriekapazität | $E_{bat}$   | kWh       | Gesamte Batteriekapazität    |
+| Basisverbrauch    | $V_{basis}$ | kWh/100km | Durchschnittlicher Verbrauch |
+
 ## 2.Streckenprofil
 
 beschreibt eine vereinfachte Fahrtstrecke:
