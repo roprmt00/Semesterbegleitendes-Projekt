@@ -16,11 +16,11 @@ Dauerhafte Eigenschaften eines Elektrofahrzeugs, z. B
 
 beschreibt eine vereinfachte Fahrtstrecke:
 
--Name
--Gesamtdistanz
--Strecke mit mehreren Segmenten z. B. Stadt, Landstraße und Autobahn
--Jedes Segment besitzt eine Distanz und eine Durchnittsgeschwindigkeit
--Höhenmeter bergauf und bergab
+- Name
+- Gesamtdistanz
+- Strecke mit mehreren Segmenten z. B. Stadt, Landstraße und Autobahn
+- Jedes Segment besitzt eine Distanz und eine Durchnittsgeschwindigkeit
+- Höhenmeter bergauf und bergab
 
 ## 3. Wetterprofil
 
