@@ -14,6 +14,7 @@ struct WetterDaten
       double Temp;
       double Windgeschw;
       bool Gegenwind; 
+      bool Rueckenwind;
     };
 
 struct Streckenprofil
@@ -30,7 +31,7 @@ struct Streckenprofil
       double Hoehenmeter_bergab;
     };
 
-    struct Fahrzeugparameter
+struct Fahrzeugparameter
     {
       string Name;
       double Batteriekapazitaet;
@@ -59,6 +60,8 @@ std::optional<WetterDaten> getWeatherData(const std::filesystem::path& filepath)
     Daten.Temp = weatherData["Temperatur"].get<double>();
     Daten.Regen = weatherData["Regen"].get<bool>();
     Daten.Gegenwind = weatherData["Gegenwind"].get<bool>();
+    Daten.Rueckenwind = weatherData["Rueckenwind"].get<bool>();
+
 
     return Daten;
 }
