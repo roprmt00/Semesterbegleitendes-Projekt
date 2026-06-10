@@ -41,6 +41,14 @@ int main (){
     cout << "Regen: " << (R ? "Ja" : "Nein") << endl;
     cout << "Wind: " << W << " km/h" << endl;
     cout << "Ladezustand: " << SoC << "%" << endl << endl;
-    
+
+    // ========== Berechnungen==========
+
+    //1.1 Basisenergieverbrauch
+
+     double E_basis = (D_gesamt / 100.0) * V_basis;
+    cout << "=== BERECHNUNGEN ===" << endl;
+    cout << "Basisenergieverbrauch: " << E_basis << " kWh" << endl; //Test 
+
 }
 
