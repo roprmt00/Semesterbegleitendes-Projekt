@@ -4,10 +4,11 @@
 
 #include <iostream> //Hier binde Ich die Standardbibliotheken ein für Ein und Augabe
 #include <cmath> //Hier binde Ich die cmath Bibliothek ein, damit Ich die pow Funktion verwenden kann
+using namespace std;
 
 int main (){
 
-    std::cout << " ===Elektrofahrzeug Energieberechnung=== " << std::endl << std::endl;
+    cout << " ===Elektrofahrzeug Energieberechnung=== " << endl << endl;
      
      // ========== FAHRZEUGPARAMETER ==========
     double E_bat = 75.0;           // Batteriekapazität [kWh]
@@ -27,5 +28,19 @@ int main (){
     // ========== LADEZUSTAND ==========
     double SoC = 80.0;             // State of Charge [%]
 
+
+    // Die Eingabeparameter ausgeben
+
+    cout << "=== EINGABEPARAMETER ===" << endl;
+    cout << "Batteriekapazität: " << E_bat << " kWh" << endl;
+    cout << "Basisverbrauch: " << V_basis << " kWh/100km" << endl;
+    cout << "Distanz: " << D_gesamt << " km" << endl;
+    cout << "Durchschnittsgeschwindigkeit: " << v_avg << " km/h" << endl;
+    cout << "Höhenmeter auf/ab: " << H_auf << "m / " << H_ab << "m" << endl;
+    cout << "Temperatur: " << T << " °C" << endl;
+    cout << "Regen: " << (R ? "Ja" : "Nein") << endl;
+    cout << "Wind: " << W << " km/h" << endl;
+    cout << "Ladezustand: " << SoC << "%" << endl << endl;
+    
 }
 
