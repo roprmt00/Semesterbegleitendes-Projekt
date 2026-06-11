@@ -108,8 +108,8 @@ int main (){
     cout << "4. Regenfaktor" << endl;
     cout << "   f_R = " << f_R << endl << endl;
 
-    // 5. Windfaktor
-    //    f_W = 1 + 0.001 * W^2 / 100
+    //5. Windfaktor
+    //f_W = 1 + 0.001 * W^2 / 100
 
     double f_W = 1.0 + 0.001 * pow(W, 2) / 100.0;
 
@@ -117,7 +117,7 @@ int main (){
     cout << "   f_W = " << f_W << endl << endl;
 
     //6. Höhenmeterfaktor
-    //    f_H,i = 1 + (H_auf,i - 0.5 * H_ab,i) * 10 / D_i
+    //f_H,i = 1 + (H_auf,i - 0.5 * H_ab,i) * 10 / D_i
 
     double f_H_stadt       = 1.0 + ((H_auf_stadt       - 0.5 * H_ab_stadt)       * 10.0) / D_stadt;
     double f_H_landstrasse = 1.0 + ((H_auf_landstrasse - 0.5 * H_ab_landstrasse) * 10.0) / D_landstrasse;
@@ -127,6 +127,32 @@ int main (){
     cout << "   Stadt:      f_H_stadt       = " << f_H_stadt       << endl;
     cout << "   Landstraße: f_H_landstrasse = " << f_H_landstrasse << endl;
     cout << "   Autobahn:   f_H_autobahn    = " << f_H_autobahn    << endl << endl;
+
+    //7. Streckentypfaktor
+    //Stadt=1.15 | Landstraße=1.0 | Autobahn=0.95
+
+    double f_S_stadt       = 1.15;
+    double f_S_landstrasse = 1.0;
+    double f_S_autobahn    = 0.95;
+ 
+    cout << "7. Streckentypfaktoren" << endl;
+    cout << "   Stadt:      f_S_stadt       = " << f_S_stadt       << endl;
+    cout << "   Landstraße: f_S_landstrasse = " << f_S_landstrasse << endl;
+    cout << "   Autobahn:   f_S_autobahn    = " << f_S_autobahn    << endl << endl;
+
+    //8. Gesamtenergieverbrauch
+    //E_i = E_basis,i * f_v,i * f_T * f_R * f_W * f_H,i * f_S,i
+
+    double E_stadt       = E_basis_stadt    * f_v_stadt       * f_T * f_R * f_W * f_H_stadt       * f_S_stadt;
+    double E_landstrasse = E_basis_land     * f_v_landstrasse * f_T * f_R * f_W * f_H_landstrasse * f_S_landstrasse;
+    double E_autobahn    = E_basis_autobahn * f_v_autobahn    * f_T * f_R * f_W * f_H_autobahn    * f_S_autobahn;
+    double E_gesamt      = E_stadt + E_landstrasse + E_autobahn;
+ 
+    cout << "8. Gesamtenergieverbrauch pro Segment" << endl;
+    cout << "   Stadt:      E_stadt       = " << E_stadt       << " kWh" << endl;
+    cout << "   Landstraße: E_landstrasse = " << E_landstrasse << " kWh" << endl;
+    cout << "   Autobahn:   E_autobahn    = " << E_autobahn    << " kWh" << endl;
+    cout << "   GESAMT:     E_gesamt      = " << E_gesamt      << " kWh" << endl << endl;
 }
 
 
