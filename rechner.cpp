@@ -174,13 +174,13 @@ int main (){
 
     double E_verfügbar = (SoC / 100.0) * E_bat;
 
-    // 9.2 Puffer-Energie / Reserve (5.2)
+    // 9.2 Puffer-Energie / Reserve 
     double E_puffer = 0.1 * E_bat;
  
     // 9.3 Nutzbare Energie (5.3)
     double E_nutzbar = E_verfügbar - E_puffer;
  
-    // 9.4 Theoretische maximale Reichweite (5.4)
+    // 9.4 Theoretische maximale Reichweite 
     double R_max = E_nutzbar / (V_basis / 100.0);
  
     // Durchschnittliche Faktoren für realistische Reichweite
@@ -197,7 +197,41 @@ int main (){
     cout << "    Max. Reichweite:       R_max       = " << R_max       << " km"  << endl;
     cout << "    Realistische Reichweite: R_real    = " << R_real      << " km"  << endl << endl;
 
+    // 10. MACHBARKEIT 
+
+    double E_reserve          = E_nutzbar - E_gesamt;
+    double delta_E            = E_gesamt - E_nutzbar;
+    double SoC_erforderlich   = ((E_gesamt + E_puffer) / E_bat) * 100.0;
+    double E_sicherheit       = 0.15 * E_nutzbar;
+ 
+    bool fahrt_moeglich        = (E_gesamt <= E_nutzbar);
+    bool fahrt_sicher          = (E_gesamt <= (E_nutzbar - E_sicherheit));
+ 
+     cout << "11. Machbarkeit und Empfehlungen" << endl;
+    cout << "    Erforderliche Energie:      E_gesamt        = " << E_gesamt        << " kWh" << endl;
+    cout << "    Verbleibende Reserve:       E_reserve       = " << E_reserve       << " kWh" << endl;
+    cout << "    Erforderlicher Ladezustand: SoC_erforderlich= " << SoC_erforderlich<< " %"   << endl;
+    cout << "    Energiedefizit (falls neg.): delta_E        = " << delta_E         << " kWh" << endl << endl;
+ 
+    cout << "    Fahrt möglich:       " << (fahrt_moeglich ? "JA"  : "NEIN") << endl;
+    cout << "    Fahrt sicher möglich:" << (fahrt_sicher   ? "JA"  : "NEIN") << endl << endl;
+ 
+    // Warnstufen 
     
+    cout << "    Warnstufe: ";
+    if (E_reserve < 0.0)
+        cout << "[UNMOEGLICH] Fahrt nicht möglich - Energie reicht nicht aus." << endl;
+    else if (E_reserve <= 0.05 * E_nutzbar)
+        cout << "[ROT]    Fahrt nicht empfohlen - Reserve sehr gering." << endl;
+    else if (E_reserve <= 0.2 * E_nutzbar)
+        cout << "[GELB]   Fahrt möglich, aber Vorsicht." << endl;
+    else
+        cout << "[GRUEN]  Fahrt problemlos möglich." << endl;
+ 
+    cout << endl;
+ 
+    return 0;
+
 }
 
 
