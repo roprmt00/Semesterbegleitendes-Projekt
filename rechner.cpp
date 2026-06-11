@@ -133,9 +133,9 @@ int main (){
     //6. Höhenmeterfaktor
     //f_H,i = 1 + (H_auf,i - 0.5 * H_ab,i) * 10 / D_i
 
-    double f_H_stadt       = 1.0 + ((H_auf_stadt       - 0.5 * H_ab_stadt)       * 10.0) / D_stadt;
-    double f_H_landstrasse = 1.0 + ((H_auf_landstrasse - 0.5 * H_ab_landstrasse) * 10.0) / D_landstrasse;
-    double f_H_autobahn    = 1.0 + ((H_auf_autobahn    - 0.5 * H_ab_autobahn)    * 10.0) / D_autobahn;
+    double f_H_stadt       = 1.0 + ((H_auf_stadt       - 0.5 * H_ab_stadt)       * 1.0) / (D_stadt*1000.0);
+    double f_H_landstrasse = 1.0 + ((H_auf_landstrasse - 0.5 * H_ab_landstrasse) * 1.0) / (D_landstrasse*1000.0);
+    double f_H_autobahn    = 1.0 + ((H_auf_autobahn    - 0.5 * H_ab_autobahn)    * 1.0) / (D_autobahn*1000.0);
  
     cout << "6. Höhenfaktoren" << endl;
     cout << "   Stadt:      f_H_stadt       = " << f_H_stadt       << endl;
