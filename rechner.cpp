@@ -15,9 +15,9 @@ int main (){
     double V_basis = 18.0;         // Basisverbrauch [kWh/100km]
 
     // ========== STRECKEPARAMETER - SEGMENTIERT ==========
-    double D_stadt = 50.0;         // Stadt [km]
+    double D_stadt = 20.0;         // Stadt [km]
     double D_landstrasse = 100.0;  // Landstraße [km]
-    double D_autobahn = 50.0;      // Autobahn [km]
+    double D_autobahn = 80.0;      // Autobahn [km]
 
     // ========== STRECKEPARAMETER ==========
     double D_gesamt = D_stadt + D_landstrasse + D_autobahn;    // Gesamtdistanz [km]
@@ -50,10 +50,10 @@ int main (){
     cout << "Batteriekapazität: " << E_bat << " kWh" << endl;
     cout << "Basisverbrauch: " << V_basis << " kWh/100km" << endl;
     cout << "\nStreckensegmente:" << endl;
-    cout << "  Stadt: " << D_stadt << " km  und " << v_stadt << " km/h" << endl;
-    cout << "  Landstraße: " << D_landstrasse << " km und " << v_landstrasse << " km/h" << endl;
-    cout << "  Autobahn: " << D_autobahn << " km und " << v_autobahn << " km/h" << endl;
-    cout << "  GESAMT: " << D_gesamt << " km" << endl;
+    cout << "Stadt: " << D_stadt << " km  und " << v_stadt << " km/h" << endl;
+    cout << "Landstraße: " << D_landstrasse << " km und " << v_landstrasse << " km/h" << endl;
+    cout << "Autobahn: " << D_autobahn << " km und " << v_autobahn << " km/h" << endl;
+    cout << "GESAMT: " << D_gesamt << " km" << endl;
     cout << "\nTemperatur: " << T << " °C" << endl;
     cout << "Regen: " << (R ? "Ja" : "Nein") << endl;
     cout << "Wind: " << W << " km/h" << endl;
@@ -214,7 +214,7 @@ int main (){
     cout << "    Energiedefizit (falls neg.): delta_E        = " << delta_E         << " kWh" << endl << endl;
  
     cout << "    Fahrt möglich:       " << (fahrt_moeglich ? "JA"  : "NEIN") << endl;
-    cout << "    Fahrt sicher möglich:" << (fahrt_sicher   ? "JA"  : "NEIN") << endl << endl;
+    cout << "    Fahrt sicher möglich: " << (fahrt_sicher   ? "JA"  : "NEIN") << endl << endl;
  
     // Warnstufen 
     
