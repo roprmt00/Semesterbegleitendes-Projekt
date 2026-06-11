@@ -28,12 +28,12 @@ int main (){
     double v_autobahn = 120.0;     // Autobahn [km/h]
 
     // ======== Höhenmeter pro Segment ========
-    double H_auf_stadt = 100.0;       // Höhenmeter auf Stadt [m]
-    double H_ab_stadt = 100.0;        // Höhenmeter ab Stadt [m]
-    double H_auf_landstrasse = 300.0; // Höhenmeter auf Landstraße [m]
-    double H_ab_landstrasse = 300.0;  // Höhenmeter ab Landstraße [m]
-    double H_auf_autobahn = 100.0;    // Höhenmeter auf Autobahn [m]
-    double H_ab_autobahn = 100.0;     // Höhenmeter ab Autobahn [m]
+    double H_auf_stadt = 20.0;       // Höhenmeter auf Stadt [m]
+    double H_ab_stadt = 20.0;        // Höhenmeter ab Stadt [m]
+    double H_auf_landstrasse = 100.0; // Höhenmeter auf Landstraße [m]
+    double H_ab_landstrasse = 100.0;  // Höhenmeter ab Landstraße [m]
+    double H_auf_autobahn = 50.0;    // Höhenmeter auf Autobahn [m]
+    double H_ab_autobahn = 50.0;     // Höhenmeter ab Autobahn [m]
 
     // ========== WETTERPARAMETER ==========
     double T = 5.0;                // Temperatur [°C]
