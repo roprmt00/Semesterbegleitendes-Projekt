@@ -99,6 +99,34 @@ int main (){
  
     cout << "3. Temperaturfaktor" << endl;
     cout << "   f_T = " << f_T << endl << endl;
+
+    //4. Regen-Einflussfaktor
+    //F_R: 1.05 wenn Regen, sonst 1.0
+
+    double f_R = R ? 1.05 : 1.0;
+ 
+    cout << "4. Regenfaktor" << endl;
+    cout << "   f_R = " << f_R << endl << endl;
+
+    // 5. Windfaktor
+    //    f_W = 1 + 0.001 * W^2 / 100
+
+    double f_W = 1.0 + 0.001 * pow(W, 2) / 100.0;
+
+    cout << "5. Windfaktor" << endl;
+    cout << "   f_W = " << f_W << endl << endl;
+
+    //6. Höhenmeterfaktor
+    //    f_H,i = 1 + (H_auf,i - 0.5 * H_ab,i) * 10 / D_i
+
+    double f_H_stadt       = 1.0 + ((H_auf_stadt       - 0.5 * H_ab_stadt)       * 10.0) / D_stadt;
+    double f_H_landstrasse = 1.0 + ((H_auf_landstrasse - 0.5 * H_ab_landstrasse) * 10.0) / D_landstrasse;
+    double f_H_autobahn    = 1.0 + ((H_auf_autobahn    - 0.5 * H_ab_autobahn)    * 10.0) / D_autobahn;
+ 
+    cout << "6. Höhenfaktoren" << endl;
+    cout << "   Stadt:      f_H_stadt       = " << f_H_stadt       << endl;
+    cout << "   Landstraße: f_H_landstrasse = " << f_H_landstrasse << endl;
+    cout << "   Autobahn:   f_H_autobahn    = " << f_H_autobahn    << endl << endl;
 }
 
 
