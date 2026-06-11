@@ -51,7 +51,7 @@ int main (){
     cout << "Basisverbrauch: " << V_basis << " kWh/100km" << endl;
     cout << "\nStreckensegmente:" << endl;
     cout << "  Stadt: " << D_stadt << " km  und " << v_stadt << " km/h" << endl;
-    cout << "  Landstraße: " << D_landstrasse << " km und" << v_landstrasse << " km/h" << endl;
+    cout << "  Landstraße: " << D_landstrasse << " km und " << v_landstrasse << " km/h" << endl;
     cout << "  Autobahn: " << D_autobahn << " km und " << v_autobahn << " km/h" << endl;
     cout << "  GESAMT: " << D_gesamt << " km" << endl;
     cout << "\nTemperatur: " << T << " °C" << endl;
@@ -63,33 +63,42 @@ int main (){
 
     //1 Basisenergieverbrauch
 
-     double E_basis = (D_gesamt / 100.0) * V_basis;
-     cout << "Basisenergieverbrauch allgemein: E_basis = " << E_basis << " kWh" << endl;
+    double E_basis = (D_gesamt / 100.0) * V_basis;
+    double E_basis_stadt    = (D_stadt       / 100.0) * V_basis;
+    double E_basis_land     = (D_landstrasse / 100.0) * V_basis;
+    double E_basis_autobahn = (D_autobahn    / 100.0) * V_basis;
+ 
+    cout << "1. Basisenergieverbrauch" << endl;
+    cout << "   Gesamt:     E_basis          = " << E_basis          << " kWh" << endl;
+    cout << "   Stadt:      E_basis_stadt    = " << E_basis_stadt    << " kWh" << endl;
+    cout << "   Landstraße: E_basis_land     = " << E_basis_land     << " kWh" << endl;
+    cout << "   Autobahn:   E_basis_autobahn = " << E_basis_autobahn << " kWh" << endl << endl;
 
+    //2 Geschwindigkeitsfaktoren
 
-     //1.1 Basisenergieverbrauch Stadt
+    double f_v_stadt       = 1.0 + 0.01 * pow((v_stadt       - 50.0), 2) / 100.0;
+    double f_v_landstrasse = 1.0 + 0.01 * pow((v_landstrasse - 50.0), 2) / 100.0;
+    double f_v_autobahn    = 1.0 + 0.01 * pow((v_autobahn    - 50.0), 2) / 100.0;
 
-     double E_basis_stadt = (D_stadt / 100.0) * V_basis;
-     cout << "Basisenergieverbrauch Stadt: E_basis_stadt = " << E_basis_stadt << " kWh" << endl;
+    cout << "2. Geschwindigkeitsfaktoren" << endl;
+    cout << "   Stadt:      f_v_stadt       = " << f_v_stadt       << endl;
+    cout << "   Landstraße: f_v_landstrasse = " << f_v_landstrasse << endl;
+    cout << "   Autobahn:   f_v_autobahn    = " << f_v_autobahn    << endl << endl;
 
-    //1.2 Geschwindigkeitsfaktor Stadt
+    // 3. Temperaturfaktor
+    // f_T: abhängig von Außentemperatur T in °C und wichtiger Einflussfaktor 
 
-    double f_v_stadt = 1.0 + 0.01 * pow((v_stadt - 50.0), 2) / 100.0;
-    cout << "Geschwindigkeitsfaktor Stadt: f_v_stadt = " << f_v_stadt << endl;
+    double f_T;
 
-    //1.3 Höhenfaktor Stadt
-
-    double f_H_stadt = 1.0 + ((H_auf_stadt - 0.5 * H_ab_stadt) * 10.0) / D_stadt;
-    cout << " Höhenfaktor Stadt: f_H_stadt = " << f_H_stadt << endl;
-
-    //5.4 Gesamtenergieverbrauch Stadt
-
-    double E_stadt = E_basis_stadt * f_v_stadt * f_H_stadt;
-    cout << "5.4 Gesamtenergieverbrauch Stadt: E_stadt = " << E_stadt << " kWh" << endl << endl;
-
-
-
-
-
+    if (T < 20.0)
+        f_T = 1.0 + 0.03 * (20.0 - T);
+    else if (T <= 25.0)
+        f_T = 1.0;
+    else
+        f_T = 1.0 + 0.02 * (T - 25.0);
+ 
+    cout << "3. Temperaturfaktor" << endl;
+    cout << "   f_T = " << f_T << endl << endl;
 }
+
 
