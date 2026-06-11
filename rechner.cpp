@@ -61,6 +61,20 @@ int main (){
 
     // ========== Berechnungen==========
 
+    //0 Fahrtzeiten
+    //t_i = D_i / v_i
+
+    double t_stadt       = D_stadt       / v_stadt;
+    double t_landstrasse = D_landstrasse / v_landstrasse;
+    double t_autobahn    = D_autobahn    / v_autobahn;
+    double t_gesamt      = t_stadt + t_landstrasse + t_autobahn;
+ 
+    cout << "9. Fahrtzeiten" << endl;
+    cout << "   Stadt:      t_stadt       = " << t_stadt       << " h" << endl;
+    cout << "   Landstraße: t_landstrasse = " << t_landstrasse << " h" << endl;
+    cout << "   Autobahn:   t_autobahn    = " << t_autobahn    << " h" << endl;
+    cout << "   GESAMT:     t_gesamt      = " << t_gesamt      << " h" << endl << endl;
+
     //1 Basisenergieverbrauch
 
     double E_basis = (D_gesamt / 100.0) * V_basis;
@@ -153,6 +167,37 @@ int main (){
     cout << "   Landstraße: E_landstrasse = " << E_landstrasse << " kWh" << endl;
     cout << "   Autobahn:   E_autobahn    = " << E_autobahn    << " kWh" << endl;
     cout << "   GESAMT:     E_gesamt      = " << E_gesamt      << " kWh" << endl << endl;
+
+    // 9. Reichweitenberechnung
+
+    // 9.1 Verfügbare Energie
+
+    double E_verfügbar = (SoC / 100.0) * E_bat;
+
+    // 9.2 Puffer-Energie / Reserve (5.2)
+    double E_puffer = 0.1 * E_bat;
+ 
+    // 9.3 Nutzbare Energie (5.3)
+    double E_nutzbar = E_verfügbar - E_puffer;
+ 
+    // 9.4 Theoretische maximale Reichweite (5.4)
+    double R_max = E_nutzbar / (V_basis / 100.0);
+ 
+    // Durchschnittliche Faktoren für realistische Reichweite
+    double f_v_avg = (f_v_stadt * D_stadt + f_v_landstrasse * D_landstrasse + f_v_autobahn * D_autobahn) / D_gesamt;
+    double f_H_avg = (f_H_stadt * D_stadt + f_H_landstrasse * D_landstrasse + f_H_autobahn * D_autobahn) / D_gesamt;
+    double f_S_avg = (f_S_stadt * D_stadt + f_S_landstrasse * D_landstrasse + f_S_autobahn * D_autobahn) / D_gesamt;
+ 
+    double R_real = E_nutzbar / ((V_basis * f_v_avg * f_T * f_R * f_W * f_H_avg * f_S_avg) / 100.0);
+ 
+    cout << "9. Reichweitenberechnung" << endl;
+    cout << "    Verfügbare Energie:    E_verfügbar = " << E_verfügbar << " kWh" << endl;
+    cout << "    Puffer-Energie:        E_puffer    = " << E_puffer    << " kWh" << endl;
+    cout << "    Nutzbare Energie:      E_nutzbar   = " << E_nutzbar   << " kWh" << endl;
+    cout << "    Max. Reichweite:       R_max       = " << R_max       << " km"  << endl;
+    cout << "    Realistische Reichweite: R_real    = " << R_real      << " km"  << endl << endl;
+
+    
 }
 
 
