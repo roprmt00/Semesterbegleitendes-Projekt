@@ -22,18 +22,18 @@ int main (){
     // ========== STRECKEPARAMETER ==========
     double D_gesamt = D_stadt + D_landstrasse + D_autobahn;    // Gesamtdistanz [km]
 
-    // Durchschnittsgeschwindigkeiten pro Segment
+    // ======== Durchschnittsgeschwindigkeiten pro Segment ========
     double v_stadt = 40.0;         // Stadt [km/h]
     double v_landstrasse = 80.0;   // Landstraße [km/h]
     double v_autobahn = 120.0;     // Autobahn [km/h]
 
-    // Höhenmeter pro Segment
-    double H_auf_stadt = 100.0;    
-    double H_ab_stadt = 100.0;
-    double H_auf_landstrasse = 300.0;
-    double H_ab_landstrasse = 300.0;
-    double H_auf_autobahn = 100.0;
-    double H_ab_autobahn = 100.0;
+    // ======== Höhenmeter pro Segment ========
+    double H_auf_stadt = 100.0;       // Höhenmeter auf Stadt [m]
+    double H_ab_stadt = 100.0;        // Höhenmeter ab Stadt [m]
+    double H_auf_landstrasse = 300.0; // Höhenmeter auf Landstraße [m]
+    double H_ab_landstrasse = 300.0;  // Höhenmeter ab Landstraße [m]
+    double H_auf_autobahn = 100.0;    // Höhenmeter auf Autobahn [m]
+    double H_ab_autobahn = 100.0;     // Höhenmeter ab Autobahn [m]
 
     // ========== WETTERPARAMETER ==========
     double T = 5.0;                // Temperatur [°C]
@@ -44,7 +44,7 @@ int main (){
     double SoC = 80.0;             // State of Charge [%]
 
 
-    // Die Eingabeparameter ausgeben
+    // ======== Eingabeparameter ausgeben ========
 
     cout << "--- EINGABEPARAMETER ---" << endl;
     cout << "Batteriekapazität: " << E_bat << " kWh" << endl;
@@ -83,7 +83,7 @@ int main (){
     cout << " Höhenfaktor Stadt: f_H_stadt = " << f_H_stadt << endl;
 
     //5.4 Gesamtenergieverbrauch Stadt
-    
+
     double E_stadt = E_basis_stadt * f_v_stadt * f_H_stadt;
     cout << "5.4 Gesamtenergieverbrauch Stadt: E_stadt = " << E_stadt << " kWh" << endl << endl;
 
