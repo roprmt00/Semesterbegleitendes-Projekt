@@ -123,9 +123,9 @@ int main (){
     cout << "   f_R = " << f_R << endl << endl;
 
     //5. Windfaktor
-    //f_W = 1 + 0.001 * W^2 / 100
+    //f_W = 1 + 0.01 * W^2 
 
-    double f_W = 1.0 + 0.001 * pow(W, 2) / 100.0;
+    double f_W = 1.0 + 0.01 * pow(W, 2) / 100.0;
 
     cout << "5. Windfaktor" << endl;
     cout << "   f_W = " << f_W << endl << endl;
@@ -207,7 +207,7 @@ int main (){
     bool fahrt_moeglich        = (E_gesamt <= E_nutzbar);
     bool fahrt_sicher          = (E_gesamt <= (E_nutzbar - E_sicherheit));
  
-     cout << "11. Machbarkeit und Empfehlungen" << endl;
+     cout << "10. Machbarkeit und Empfehlungen" << endl;
     cout << "    Erforderliche Energie:      E_gesamt        = " << E_gesamt        << " kWh" << endl;
     cout << "    Verbleibende Reserve:       E_reserve       = " << E_reserve       << " kWh" << endl;
     cout << "    Erforderlicher Ladezustand: SoC_erforderlich= " << SoC_erforderlich<< " %"   << endl;
