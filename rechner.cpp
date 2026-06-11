@@ -11,7 +11,7 @@ int main (){
     cout << " ===Elektrofahrzeug Energieberechnung=== " << endl << endl;
      
      // ========== FAHRZEUGPARAMETER ==========
-    double E_bat = 75.0;           // Batteriekapazität [kWh]
+    double E_bat = 90.0;           // Batteriekapazität [kWh]
     double V_basis = 18.0;         // Basisverbrauch [kWh/100km]
 
     // ========== STRECKEPARAMETER - SEGMENTIERT ==========
@@ -41,7 +41,7 @@ int main (){
     double W = 20.0;               // Windgeschwindigkeit [km/h]
 
     // ========== LADEZUSTAND ==========
-    double SoC = 80.0;             // State of Charge [%]
+    double SoC = 100.0;             // State of Charge [%]
 
 
     // ======== Eingabeparameter ausgeben ========
@@ -136,7 +136,7 @@ int main (){
     double  f_H_stadt       = 1.0 + ((H_auf_stadt       - 0.5 * H_ab_stadt)       / 1000.0);
     double f_H_landstrasse = 1.0 + ((H_auf_landstrasse - 0.5 * H_ab_landstrasse) / 1000.0);
     double f_H_autobahn    = 1.0 + ((H_auf_autobahn    - 0.5 * H_ab_autobahn)    / 1000.0);
-    
+
     cout << "6. Höhenfaktoren" << endl;
     cout << "   Stadt:      f_H_stadt       = " << f_H_stadt       << endl;
     cout << "   Landstraße: f_H_landstrasse = " << f_H_landstrasse << endl;
