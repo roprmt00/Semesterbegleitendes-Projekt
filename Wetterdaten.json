@@ -2,5 +2,6 @@
   "Regen": true,
   "Temperatur": 10.5,
   "Windgeschwindigkeit": 20,
-  "Gegenwind": true
+  "Gegenwind": true,
+  "Rueckenwind": false
 }
