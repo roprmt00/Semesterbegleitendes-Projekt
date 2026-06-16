@@ -11,14 +11,14 @@ int main() {
     
     std::cout << "Starte das Programm zum Lesen der JSON-Daten..." << std::endl;
 
-    std::cout << "Bitte geben Sie den Namen der Datei für die Wetterdaten ein" << std::endl;
+    std::cout << "Bitte geben Sie den Namen der Datei fuer die Wetterdaten ein" << std::endl;
     std::cin >> Json_WeatherData; 
 
     // --- Wetterdaten lesen ---
     std::cout << "\nVersuche Wetterdaten zu lesen..." << std::endl;
     if (auto weather = getWeatherData(Json_WeatherData)) { // Annahme: Datei für Wetterdaten liegt im selben Verzeichnis wie die ausführbare Datei
         std::cout << "Wetterdaten erfolgreich geladen:" << std::endl;
-        std::cout << "  Temperatur: " << weather->Temp << " °C" << std::endl;
+        std::cout << "  Temperatur: " << weather->Temp << " Grad Celsius" << std::endl;
         std::cout << "  Windgeschwindigkeit: " << weather->Windgeschw << " km/h" << std::endl;
         std::cout << "  Regen: " << (weather->Regen ? "Ja" : "Nein") << std::endl;
         std::cout << "  Gegenwind: " << (weather->Gegenwind ? "Ja" : "Nein") << std::endl;
@@ -28,7 +28,7 @@ int main() {
     }
 
 
-    std::cout << "Bitte geben Sie den Namen der Datei für das Streckenprofil ein" << std::endl;
+    std::cout << "Bitte geben Sie den Namen der Datei fuer das Streckenprofil ein" << std::endl;
     std::cin >> Json_RouteData; 
 
     // --- Streckenprofildaten lesen ---
@@ -43,15 +43,15 @@ int main() {
         std::cout << "  Durchschnitt Land: " << route->Durchschnitt_Land << " km" << std::endl;
         std::cout << "  Durchschnitt Stadt: " << route->Durchschnitt_Stadt << " km" << std::endl;
         std::cout << "  Durchschnitt Autobahn: " << route->Durchschnitt_Autobahn << " km" << std::endl;
-        std::cout << "  Höhenmeter bergauf: " << route->Hoehenmeter_bergauf << " km" << std::endl;
-        std::cout << "  Höhenmeter bergab: " << route->Hoehenmeter_bergab << " km" << std::endl;
+        std::cout << "  Hoehenmeter bergauf: " << route->Hoehenmeter_bergauf << " km" << std::endl;
+        std::cout << "  Hoehenmeter bergab: " << route->Hoehenmeter_bergab << " km" << std::endl;
 
     } else {
         std::cerr << "Fehler beim Laden der Streckenprofildaten." << std::endl;
     }
 
 
-    std::cout << "Bitte geben Sie den Namen der Datei für die Fahrzeugparameter ein" << std::endl;
+    std::cout << "Bitte geben Sie den Namen der Datei fuer die Fahrzeugparameter ein" << std::endl;
     std::cin >> Json_CarData; 
 
     // --- Fahrzeugparameter lesen ---
@@ -59,7 +59,7 @@ int main() {
     if (auto car = getCarData(Json_CarData)) { // Annahme: Datei für Fahrzeugparameter liegt im selben Verzeichnis wie die ausführbare Datei
         std::cout << "Fahrzeugparameter erfolgreich geladen:" << std::endl;
         std::cout << "  Name: " << car->Name << std::endl;
-        std::cout << "  Batteriekapazität: " << car->Batteriekapazitaet << " kWh" << std::endl;
+        std::cout << "  Batteriekapazitaet: " << car->Batteriekapazitaet << " kWh" << std::endl;
         std::cout << "  Durchschnittlicher Verbrauch: " << car->Durchschn_Verbrauch << " kWh/100km" << std::endl;
     } else {
         std::cerr << "Fehler beim Laden der Fahrzeugparameter." << std::endl;
