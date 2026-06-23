@@ -174,6 +174,85 @@ TEST_CASE("Wettereinflüsse auf das Ergebnis") {
         else
             REQUIRE(resMit.fahrt_moeglich == false);
     }
-    
-    
+}
+
+//Testfall 4: Randwerte
+
+TEST_CASE("Randwertanalyse") {
+ 
+    SECTION("SoC = 0%: keine Energie verfügbar") {
+        FahrzeugDaten f = standardFahrzeug();
+        f.SoC = 0.0;
+ 
+        StreckeDaten s = standardStrecke();
+        WetterDaten  w = standardWetter();
+ 
+        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+ 
+        REQUIRE(res.E_verfuegbar == Approx(0.0));
+        REQUIRE(res.fahrt_moeglich == false);
+        REQUIRE(res.fehlende_Energie > 0.0);
+    }
+ 
+    SECTION("SoC = 100%: maximale Energie verfügbar") {
+        FahrzeugDaten f = standardFahrzeug();
+        f.SoC = 100.0;
+ 
+        StreckeDaten s = standardStrecke();
+        WetterDaten  w = standardWetter();
+ 
+        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+ 
+        REQUIRE(res.E_verfuegbar == Approx(90.0));
+    }
+ 
+    SECTION("Streckenlänge = 0 km:  kein Verbrauch") {
+        FahrzeugDaten f = standardFahrzeug();
+        WetterDaten   w = standardWetter();
+ 
+        StreckeDaten s = standardStrecke();
+        s.D_stadt       = 0.0;
+        s.D_landstrasse = 0.0;
+        s.D_autobahn    = 0.0;
+ 
+        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+ 
+        REQUIRE(res.fahrt_moeglich == true);
+        REQUIRE(res.E_reserve == Approx(81.0)); // Nutzbare Energie = 90 - 9 (Puffer) = 81 kWh, Verbrauch = 0
+    }
+ 
+    SECTION("Temperatur genau 20°C: Grenzwert Temperaturfaktor") {
+        FahrzeugDaten f = standardFahrzeug();
+        StreckeDaten  s = standardStrecke();
+ 
+        WetterDaten w20 = standardWetter();
+        w20.Temperatur = 20.0;   // f_T = 1.0  (Grenze unten)
+ 
+        WetterDaten w25 = standardWetter();
+        w25.Temperatur = 25.0;   // f_T = 1.0  (Grenze oben)
+ 
+        BerechnungsErgebnis res20 = berechneReichweite(f, s, w20);
+        BerechnungsErgebnis res25 = berechneReichweite(f, s, w25);
+ 
+        // gleiches Ergebnis
+        if (res20.fahrt_moeglich && res25.fahrt_moeglich)
+            REQUIRE(res20.E_reserve == Approx(res25.E_reserve)); 
+    }
+ 
+    SECTION("SoC knapp ausreichend: Grenzfall fahrt_moeglich") {
+
+        FahrzeugDaten f = standardFahrzeug();
+        StreckeDaten  s = standardStrecke();
+        WetterDaten   w = standardWetter();
+ 
+        BerechnungsErgebnis resVoll = berechneReichweite(f, s, w);
+        
+        REQUIRE(resVoll.fahrt_moeglich == true); //teste mit 100% SoC, sollte möglich sein
+
+        f.SoC = 10.0;// Mit sehr niedrigem SoC soll es scheitern
+        BerechnungsErgebnis resKnapp = berechneReichweite(f, s, w);
+
+        REQUIRE(resKnapp.fahrt_moeglich == false);
+        REQUIRE(resKnapp.SoC_erforderlich > 10.0);
+    }
 }
