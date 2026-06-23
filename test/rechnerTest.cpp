@@ -118,3 +118,62 @@ TEST_CASE("Normalfall: Fahrt ist nicht möglich") {
         REQUIRE(res.SoC_erforderlich > res.E_verfuegbar / f.Batteriekapazitaet * 100.0);
     }
 }
+
+//Testfall 3 Wetterbeindungen
+
+TEST_CASE("Wettereinflüsse auf das Ergebnis") {
+ 
+    SECTION("Regen erhöht den Verbrauch, Reserve sinkt") {
+        FahrzeugDaten f = standardFahrzeug();
+        StreckeDaten  s = standardStrecke();
+ 
+        WetterDaten ohneRegen = standardWetter();
+        WetterDaten mitRegen  = standardWetter();
+        mitRegen.Regen = true;
+ 
+        BerechnungsErgebnis resOhne = berechneReichweite(f, s, ohneRegen);
+        BerechnungsErgebnis resMit  = berechneReichweite(f, s, mitRegen);
+ 
+        // Beide möglich, aber mit Regen weniger Reserve
+        REQUIRE(resOhne.fahrt_moeglich == true);
+        REQUIRE(resMit.fahrt_moeglich  == true);
+        REQUIRE(resMit.E_reserve < resOhne.E_reserve);
+    }
+ 
+    SECTION("Kälte (T = -10°C) erhöht Verbrauch deutlich") {
+        FahrzeugDaten f = standardFahrzeug();
+        StreckeDaten  s = standardStrecke();
+ 
+        WetterDaten optimal = standardWetter();
+        WetterDaten kalt    = standardWetter();
+        kalt.Temperatur = -10.0;
+ 
+        BerechnungsErgebnis resOptimal = berechneReichweite(f, s, optimal);
+        BerechnungsErgebnis resKalt    = berechneReichweite(f, s, kalt);
+ 
+        // Bei Kälte muss Reserve kleiner sein (oder Fahrt gar nicht möglich)
+        if (resKalt.fahrt_moeglich)
+            REQUIRE(resKalt.E_reserve < resOptimal.E_reserve);
+        else
+            REQUIRE(resKalt.fahrt_moeglich == false);
+    }
+ 
+    SECTION("Starker Wind (100 km/h) erhöht Verbrauch") {
+        FahrzeugDaten f = standardFahrzeug();
+        StreckeDaten  s = standardStrecke();
+ 
+        WetterDaten ohneWind = standardWetter();
+        WetterDaten mitWind  = standardWetter();
+        mitWind.Windgeschwindigkeit = 100.0;
+ 
+        BerechnungsErgebnis resOhne = berechneReichweite(f, s, ohneWind);
+        BerechnungsErgebnis resMit  = berechneReichweite(f, s, mitWind);
+ 
+        if (resMit.fahrt_moeglich)
+            REQUIRE(resMit.E_reserve < resOhne.E_reserve);
+        else
+            REQUIRE(resMit.fahrt_moeglich == false);
+    }
+    
+    
+}
