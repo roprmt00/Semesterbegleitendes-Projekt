@@ -176,28 +176,11 @@ $$f_{S,i} = \begin{cases}
 - Landstraße: Durchschnittlicher Verbrauch (Referenz)
 - Autobahn: Konstante Geschwindigkeit, weniger Bremsenergie → 5% weniger (aber Geschwindigkeitsfaktor wirkt sich aus)
 
-### 4.8 Fahrstil-Einflussfaktor
-
-Der Fahrstil beeinflusst den Energieverbrauch.
-
-**Fahrstil-Faktor:**
-
-$$f_{FS} = \begin{cases}
-0.85 & \text{wenn Modus = "Eco"} \\
-1.0 & \text{wenn Modus = "Normal"} \\
-1.15 & \text{wenn Modus = "Sport"}
-\end{cases}$$
-
-**Annahmen:**
-- Eco-Modus: 15% Einsparung durch sanftere Beschleunigung
-- Normal-Modus: Standard-Verbrauch
-- Sport-Modus: 15% mehr Verbrauch durch aggressive Fahrweise
-
-### 4.9 Gesamtenergieverbrauch
+### 4.8 Gesamtenergieverbrauch
 
 **Energieverbrauch pro Segment:**
 
-$$E_i = E_{basis,i} \times f_{v,i} \times f_{T} \times f_{R} \times f_{W} \times f_{H} \times f_{S,i} \times f_{FS}$$
+$$E_i = E_{basis,i} \times f_{v,i} \times f_{T} \times f_{R} \times f_{W} \times f_{H} \times f_{S,i} $$
 
 **Gesamtenergieverbrauch:**
 
@@ -205,7 +188,7 @@ $$E_{gesamt} = \sum_{i=1}^{n} E_i$$
 
 **Vereinfachte Formel (wenn alle Segmente ähnlich sind):**
 
-$$E_{gesamt} = E_{basis} \times f_{v,avg} \times f_{T} \times f_{R} \times f_{W} \times f_{H} \times f_{S,avg} \times f_{FS}$$
+$$E_{gesamt} = E_{basis} \times f_{v,avg} \times f_{T} \times f_{R} \times f_{W} \times f_{H} \times f_{S,avg} $$
 
 wobei $f_{v,avg}$ und $f_{S,avg}$ Durchschnittswerte sind.
 ## 5. Reichweitenberechnung
