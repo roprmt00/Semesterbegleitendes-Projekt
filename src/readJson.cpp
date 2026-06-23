@@ -11,7 +11,7 @@ using json = nlohmann::json;
 using string = std::string;
     
 
-std::optional<WetterDaten> getWeatherData(const std::filesystem::path& filepath) {
+std::optional<WeatherData> getWeatherData(const std::filesystem::path& filepath) {
     
     // Datei zum Lesen öffnen
     std::ifstream inFile(filepath);
@@ -27,7 +27,7 @@ std::optional<WetterDaten> getWeatherData(const std::filesystem::path& filepath)
 
     // Wetterdaten in Variablen schreiben
     
-    WetterDaten Daten;
+    WeatherData Daten;
     Daten.Windgeschw = weatherData["Windgeschwindigkeit"].get<double>();
     Daten.Temp = weatherData["Temperatur"].get<double>();
     Daten.Regen = weatherData["Regen"].get<bool>();
@@ -38,7 +38,7 @@ std::optional<WetterDaten> getWeatherData(const std::filesystem::path& filepath)
     return Daten;
 }
 
-std::optional<Streckenprofil> getRouteData(const std::filesystem::path& filepath) {
+std::optional<RouteData> getRouteData(const std::filesystem::path& filepath) {
     
     // Datei zum Lesen öffnen
     std::ifstream inFile(filepath);
@@ -54,7 +54,7 @@ std::optional<Streckenprofil> getRouteData(const std::filesystem::path& filepath
 
     // Wetterdaten in Variablen schreiben
     
-    Streckenprofil Daten;
+    RouteData Daten;
     Daten.Name = routeData["Name"].get<string>();
     Daten.Distanz = routeData["Distanz"].get<double>();
     Daten.Distanz_Land = routeData["Distanz Land"].get<double>();
@@ -69,7 +69,7 @@ std::optional<Streckenprofil> getRouteData(const std::filesystem::path& filepath
     return Daten;
 }
 
-std::optional<Fahrzeugparameter> getCarData(const std::filesystem::path& filepath) {
+std::optional<CarData> getCarData(const std::filesystem::path& filepath) {
     
     // Datei zum Lesen öffnen
     std::ifstream inFile(filepath);
@@ -85,7 +85,7 @@ std::optional<Fahrzeugparameter> getCarData(const std::filesystem::path& filepat
 
     // Wetterdaten in Variablen schreiben
     
-    Fahrzeugparameter Daten;
+    CarData Daten;
     Daten.Name = carData["Name"].get<string>();
     Daten.Batteriekapazitaet = carData["Batteriekapazitaet (netto)"].get<double>();
     Daten.Durchschn_Verbrauch = carData["Durchschnittlicher Verbrauch"].get<double>();
