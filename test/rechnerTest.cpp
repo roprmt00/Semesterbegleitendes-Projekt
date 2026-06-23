@@ -80,3 +80,41 @@ TEST_CASE("Normalfall: Fahrt ist möglich") {
     }
 
 }
+
+// Testfall 2  Normalfall – Fahrt nicht möglich
+
+TEST_CASE("Normalfall: Fahrt ist nicht möglich") {
+
+    SECTION("Sehr niedriger SoC (5%):  Fahrt soll scheitern") {
+        FahrzeugDaten f = standardFahrzeug();
+        f.SoC = 5.0;
+ 
+        StreckeDaten  s = standardStrecke();
+        WetterDaten   w = standardWetter();
+ 
+        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+ 
+        
+        REQUIRE(res.E_verfuegbar == Approx(4.5)); // Verfügbare Energie: 5% von 90 kWh = 4.5 kWh
+        REQUIRE(res.fahrt_moeglich == false);
+        REQUIRE(res.fehlende_Energie > 0.0);// Fehlende Energie muss positiv sein
+        REQUIRE(res.SoC_erforderlich > 5.0); // Erforderlicher SoC muss über 5% liegen
+        REQUIRE(res.SoC_erforderlich <= 100.0); // Erforderlicher SoC darf nicht über 100% liegen 
+    }
+ 
+    SECTION("Sehr lange Strecke: Energie reicht nicht") {
+        FahrzeugDaten f = standardFahrzeug();
+        WetterDaten   w = standardWetter();
+ 
+        StreckeDaten s = standardStrecke();
+        s.D_stadt       = 100.0;
+        s.D_landstrasse = 300.0;
+        s.D_autobahn    = 300.0;
+ 
+        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+ 
+        REQUIRE(res.fahrt_moeglich == false);
+        REQUIRE(res.fehlende_Energie > 0.0);
+        REQUIRE(res.SoC_erforderlich > res.E_verfuegbar / f.Batteriekapazitaet * 100.0);
+    }
+}
