@@ -34,5 +34,25 @@ struct WetterDaten {
 
 //Ausgabe Structs
 
+struct BerechnungsErgebnis {
+    double E_verfuegbar;         // Verfügbare Energie [kWh]          
+    bool   fahrt_moeglich;       // Ob die Fahrt möglich ist          
+ 
+    // Wenn Fahrt möglich, dann:
+    double E_reserve;            // Verbleibende Reserve [kWh]
+ 
+    // Wenn Fahrt nicht möglich, dann:
+    double fehlende_Energie;     // Fehlende Energie [kWh]
+    double SoC_erforderlich; 
+        // Mindest-Ladezustand [%]
+};
+
+// Funktionsdeklaration
+
+BerechnungsErgebnis berechneReichweite(
+    const FahrzeugDaten&  fahrzeug,
+    const StreckeDaten&   strecke,
+    const WetterDaten&    wetter
+);
 
 #endif // RECHNER_H
