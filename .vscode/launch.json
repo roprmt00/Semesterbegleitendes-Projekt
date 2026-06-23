@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/z004tkwp/OneDrive - Siemens AG/Documents/Semesterbegleitendes-Projekt/Semesterbegleitendes-Projekt",
-      "program": "c:/Users/z004tkwp/OneDrive - Siemens AG/Documents/Semesterbegleitendes-Projekt/Semesterbegleitendes-Projekt/build/Debug/outDebug",
+      "cwd": "c:/Users/z004uebt/Desktop/Hochschulmaterialien/6. Semester/Software Engineering/Semesterbegleitendes Projekt/Projekt_GitHub",
+      "program": "c:/Users/z004uebt/Desktop/Hochschulmaterialien/6. Semester/Software Engineering/Semesterbegleitendes Projekt/Projekt_GitHub/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

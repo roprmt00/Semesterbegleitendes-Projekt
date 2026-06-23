@@ -1,3 +1,5 @@
+#include "readJson.h"
+
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -7,36 +9,6 @@
 
 using json = nlohmann::json;
 using string = std::string;
-
-struct WetterDaten
-    {
-      bool Regen;
-      double Temp;
-      double Windgeschw;
-      bool Gegenwind; 
-      bool Rueckenwind;
-    };
-
-struct Streckenprofil
-    {
-      string Name;
-      double Distanz;
-      double Distanz_Land;
-      double Distanz_Stadt;
-      double Distanz_Autobahn;
-      double Durchschnitt_Land;
-      double Durchschnitt_Stadt;
-      double Durchschnitt_Autobahn;
-      double Hoehenmeter_bergauf;
-      double Hoehenmeter_bergab;
-    };
-
-struct Fahrzeugparameter
-    {
-      string Name;
-      double Batteriekapazitaet;
-      double Durchschn_Verbrauch;   
-    };
     
 
 std::optional<WetterDaten> getWeatherData(const std::filesystem::path& filepath) {
