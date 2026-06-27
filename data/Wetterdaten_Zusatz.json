@@ -1,0 +1,9 @@
+{
+  "Regen": true,
+  "Temperatur": 10.5,
+  "Windgeschwindigkeit": 20,
+  "Gegenwind": true,
+  "Rueckenwind": false,
+  "Luftfeuchtigkeit (%)": 28,
+  "Schneefall": false 
+}
