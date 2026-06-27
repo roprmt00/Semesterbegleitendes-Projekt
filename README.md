@@ -11,11 +11,12 @@ Die Anwendung berechnet, ob eine geplante Fahrt mit einem Elektrofahrzeug mit de
 
 ### Rechnertest
 
-Um den Test zu starten, geben Sie folgende Befehle ein:
+Um den Test zu starten, geben Sie folgende Befehle ein (von der KI übernommen):
 
 ```bash
-g++ -std=c++17 -o tests rechnerTest.cpp rechner.cpp
-./tests
+cd test
+g++ -std=c++17 -I../include -o rechnerTest rechnerTest.cpp ../src/rechner.cpp
+./rechnerTest
 ```
 
 ## Testfälle
