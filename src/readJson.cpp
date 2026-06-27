@@ -16,8 +16,8 @@ std::optional<WeatherData> getWeatherData(const std::filesystem::path& filepath)
     // Datei zum Lesen öffnen
     std::ifstream inFile(filepath);
     if (!inFile.is_open()) {
-        std::cerr << "Error: File " << filepath
-            << " could not be opened for reading\n";
+        std::cerr << "Error: Datei " << filepath
+            << " konnte nicht zum Lesen geoeffnet werden\n";
         return std::nullopt;
     }
 
@@ -43,8 +43,8 @@ std::optional<RouteData> getRouteData(const std::filesystem::path& filepath) {
     // Datei zum Lesen öffnen
     std::ifstream inFile(filepath);
     if (!inFile.is_open()) {
-        std::cerr << "Error: File " << filepath
-            << " could not be opened for reading\n";
+        std::cerr << "Error: Datei " << filepath
+            << " konnte nicht zum Lesen geoeffnet werden\n";
         return std::nullopt;
     }
 
@@ -74,8 +74,8 @@ std::optional<CarData> getCarData(const std::filesystem::path& filepath) {
     // Datei zum Lesen öffnen
     std::ifstream inFile(filepath);
     if (!inFile.is_open()) {
-        std::cerr << "Error: File " << filepath
-            << " could not be opened for reading\n";
+        std::cerr << "Error: Datei " << filepath
+            << " konnte nicht zum Lesen geoeffnet werden\n";
         return std::nullopt;
     }
 
