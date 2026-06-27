@@ -1,5 +1,5 @@
-#include "include/readJson.h" 
-#include "include/rechner.h"
+#include "readJson.h" 
+#include "rechner.h"
 #include <iostream>
 #include <filesystem> // Für std::filesystem::path
 #include <sstream>
@@ -94,20 +94,27 @@ int main() {
         }
     }
     else{
-        std::cout << "\nBitte geben Sie einen gültigen gültigen float Wert ein." << std::endl;
+        std::cout << "\nBitte geben Sie einen gueltigen float Wert ein." << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
     } 
 
-    std::cout << "\nBerechnungen werden durchgeführt..." << std::endl;
+    std::cout << "\nBerechnungen werden durchgefuehrt..." << std::endl;
 
     result = berechneReichweite(car.value(), route.value(), weather.value(), SoC);
     if (result) { // Annahme: Datei für Fahrzeugparameter liegt im selben Verzeichnis wie die ausführbare Datei
-        std::cout << "Fahrzeugparameter erfolgreich geladen:" << std::endl;
-        std::cout << "  Name: " << car->Name << std::endl;
-        std::cout << "  Batteriekapazitaet: " << car->Batteriekapazitaet << " kWh" << std::endl;
-        std::cout << "  Durchschnittlicher Verbrauch: " << car->Durchschn_Verbrauch << " kWh/100km" << std::endl;
+        std::cout << "Reichweite erfolgreich berechnet:" << std::endl;
+        std::cout << "  Verfuegbare Energie: " << result->E_verfuegbar << " kWh" << std::endl;
+        if(result->fahrt_moeglich == true) {
+            std::cout << "  Die Fahrt ist moeglich." << std::endl;
+        }
+        else{
+            std::cout << "  Die Fahrt ist nicht moeglich." << std::endl;
+        }
+        std::cout << "  Verbleibende Reserve: " << result->E_reserve << " kWh" << std::endl;
+        std::cout << "  Fehlende Energie: " << result->fehlende_Energie << " kWh" << std::endl;
+        std::cout << "  Mindest-Ladezustand: " << result->SoC_erforderlich << " %" << std::endl;
     } else {
         std::cerr << "Fehler bei den Berechnungen." << std::endl;
     }
