@@ -2,13 +2,17 @@
 #include "include/rechner.h"
 #include <iostream>
 #include <filesystem> // Für std::filesystem::path
+#include <sstream>
 
 using string = std::string;
 
 int main() {
-    std::string Json_WeatherData;
-    std::string Json_RouteData;
-    std::string Json_CarData;
+    string Json_WeatherData;
+    string Json_RouteData;
+    string Json_CarData;
+    string SoC_input;
+    double SoC;
+    bool valid_input = false;
 
     std::optional<WeatherData> weather;
     std::optional<RouteData> route;
@@ -60,10 +64,9 @@ int main() {
         std::cerr << "Fehler beim Laden der Streckenprofildaten." << std::endl;
     }
 
-
     std::cout << "Bitte geben Sie den Namen der Datei fuer die Fahrzeugparameter ein" << std::endl;
     std::cin >> Json_CarData; 
-
+    
     // --- Fahrzeugparameter lesen ---
     std::cout << "\nVersuche Fahrzeugparameter zu lesen..." << std::endl;
 
@@ -77,9 +80,29 @@ int main() {
         std::cerr << "Fehler beim Laden der Fahrzeugparameter." << std::endl;
     }
 
+    while(!valid_input) {
+    std::cout << "\nBitte geben Sie zuletzt den aktuellen Ladezustand (SoC) ihres Autos ein. Der Wert muss zwischen 0.0 und 100.0 liegen." << std::endl;
+    std::cin >> SoC_input;
+    std::istringstream iss(SoC_input);
+    if(iss >> SoC && iss.eof()) {
+        if(SoC >= 0 && SoC <= 100) {
+            std::cout << "\nDie Eingabe war erfolgreich!" << std::endl;
+            valid_input = true;
+        }
+        else{
+            std::cout << "\nBitte geben Sie nur Werte zwischen 0 und 100 ein." << std::endl;
+        }
+    }
+    else{
+        std::cout << "\nBitte geben Sie einen gültigen gültigen float Wert ein." << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    } 
+
     std::cout << "\nBerechnungen werden durchgeführt..." << std::endl;
-    
-    result = berechneReichweite(car.value(), route.value(), weather.value());
+
+    result = berechneReichweite(car.value(), route.value(), weather.value(), SoC);
     if (result) { // Annahme: Datei für Fahrzeugparameter liegt im selben Verzeichnis wie die ausführbare Datei
         std::cout << "Fahrzeugparameter erfolgreich geladen:" << std::endl;
         std::cout << "  Name: " << car->Name << std::endl;

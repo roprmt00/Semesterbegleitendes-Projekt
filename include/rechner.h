@@ -23,7 +23,8 @@ struct BerechnungsErgebnis {
 BerechnungsErgebnis berechneReichweite(
     const CarData&  fahrzeug,
     const RouteData&   strecke,
-    const WeatherData&    wetter
+    const WeatherData&    wetter,
+    const double SoC
 );
 
 #endif 
