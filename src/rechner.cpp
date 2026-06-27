@@ -11,7 +11,7 @@ BerechnungsErgebnis berechneReichweite(
     const CarData&  fahrzeug,
     const RouteData&   strecke,
     const WeatherData&    wetter,
-    const int SoC
+    const double SoC
     ) {
 
     //1 Basisenergieverbrauch
