@@ -106,7 +106,7 @@ classDiagram
 
 ### Use-Case-Diagramm
 
-![Use-Case-Diagramm](docs/Usecase.png)
+![Use-Case-Diagramm](docs/UseCase.png)
 
 ## Team
 
