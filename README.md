@@ -48,66 +48,65 @@ Die genaue Berechnung des Energiebedarfs basiert auf folgenden Annahmen:
 ### Klassendiagramm für die Rechnung
 
 ```mermaid
-
 classDiagram
 
-    class FahrzeugDaten {
-        -Batteriekapazitaet: double
-        -Basisverbrauch: double
-        -SoC: double
+    class CarData {
+        +Name: string
+        +Batteriekapazitaet: double
+        +Durchschn_Verbrauch: double
     }
- 
-    class StreckeDaten {
-        -D_stadt: double
-        -D_landstrasse: double
-        -D_autobahn: double
-        -v_stadt: double
-        -v_landstrasse: double 
-        -v_autobahn: double
-        -H_auf_stadt: double
-        -H_ab_stadt: double
-        -H_auf_landstrasse: double
-        -H_ab_landstrasse: double
-        -H_auf_autobahn: double
-        -H_ab_autobahn: double
+
+    class WeatherData {
+        +Regen: bool
+        +Temp: double
+        +Windgeschw: double
+        +Gegenwind: bool
+        +Rueckenwind: bool
     }
- 
-    class WetterDaten {
-        -Temperatur: double 
-        -Regen: bool 
-        -Windgeschwindigkeit: double
+
+    class RouteData {
+        +Name: string
+        +Distanz: double
+        +Distanz_Land: double
+        +Distanz_Stadt: double
+        +Distanz_Autobahn: double
+        +Durchschnitt_Land: double
+        +Durchschnitt_Stadt: double
+        +Durchschnitt_Autobahn: double
+        +Hoehenmeter_bergauf: double
+        +Hoehenmeter_bergab: double
     }
- 
+
     class BerechnungsErgebnis {
-        -E_verfuegbar: double
-        -fahrt_moeglich: bool
-        -E_reserve: double
-        -fehlende_Energie: double
-        -SoC_erforderlich: double
+        +E_verfuegbar: double
+        +fahrt_moeglich: bool
+        +E_reserve: double
+        +fehlende_Energie: double
+        +SoC_erforderlich: double
     }
- 
+
     class berechneReichweite {
-        <<function>>
-        +berechneReichweite(fahrzeug FahrzeugDaten, strecke StreckeDaten, wetter WetterDaten) BerechnungsErgebnis
+        <>
+        +berechneReichweite(fahrzeug: CarData, strecke: RouteData, wetter: WeatherData, SoC: double) BerechnungsErgebnis
     }
- 
+
     class RechnerTest {
-        <<Catch2>>
+        <>
         +TEST_CASE_Normalfall()
         +TEST_CASE_Wetter()
         +TEST_CASE_Randwerte()
     }
- 
-    FahrzeugDaten ..> berechneReichweite : use
-    StreckeDaten  ..> berechneReichweite : use
-    WetterDaten   ..> berechneReichweite : use
+
+    CarData            ..> berechneReichweite : use
+    WeatherData        ..> berechneReichweite : use
+    RouteData          ..> berechneReichweite : use
     berechneReichweite ..> BerechnungsErgebnis : creates
     RechnerTest        ..> berechneReichweite  : tests
 ```
 
 ### Use-Case-Diagramm
 
-![Use-Case-Diagramm](docs/UseCase.png)
+![Use-Case-Diagramm](docs/UseCASE.png)
 
 ## Team
 
