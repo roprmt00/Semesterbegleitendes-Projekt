@@ -64,8 +64,8 @@ Referenzgeschwindigkeit: 50 km/h → $f_v = 1,0$.
 | 100 km/h | 1,25 |
 | 130 km/h | 1,64 |
 
-> **Herrleitung:** Die KI hat die Formel erstellt, allerdings wurde versucht,es herzuleiten:  
-> ![Geschwindigkeitsrechnung](docs/Geschwindigkeitsfaktor.jpeg)
+> **Herrleitung:** Die KI hat die Formel erstellt, allerdings wurde versucht,es herzuleiten (Rollwiderstand:konstant bei jeder Geschwindigkeit,Luftwiderstandskraft quadratisch und macht das meiste aus,...):  
+> ![Geschwindigkeitsrechnung](Geschwindigkeitsfaktor.jpeg)
 
 ---
 
