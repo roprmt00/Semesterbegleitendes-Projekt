@@ -17,7 +17,7 @@ std::optional<WeatherData> getWeatherData(const std::filesystem::path& filepath)
     std::ifstream inFile(filepath);
     if (!inFile.is_open()) {
         std::cerr << "Error: Datei " << filepath
-            << " konnte nicht zum Lesen geoeffnet werden. Bitte überprüfen Sie, ob die Datei existiert und im data-Ordner gespeichert ist. Der Dateiname muss zwingend mit .json enden.\n";
+            << " konnte nicht zum Lesen geoeffnet werden. Bitte ueberpruefen Sie, ob die Datei existiert und im data-Ordner gespeichert ist. Der Dateiname muss zwingend mit .json enden.\n";
         return std::nullopt;
     }
 
@@ -59,7 +59,7 @@ std::optional<RouteData> getRouteData(const std::filesystem::path& filepath) {
     std::ifstream inFile(filepath);
     if (!inFile.is_open()) {
         std::cerr << "Error: Datei " << filepath
-            << " konnte nicht zum Lesen geoeffnet werden. Bitte überprüfen Sie, ob die Datei existiert und im data-Ordner gespeichert ist. Der Dateiname muss zwingend mit .json enden.\n";
+            << " konnte nicht zum Lesen geoeffnet werden. Bitte ueberpruefen Sie, ob die Datei existiert und im data-Ordner gespeichert ist. Der Dateiname muss zwingend mit .json enden.\n";
         return std::nullopt;
     }
 
@@ -106,7 +106,7 @@ std::optional<CarData> getCarData(const std::filesystem::path& filepath) {
     std::ifstream inFile(filepath);
     if (!inFile.is_open()) {
         std::cerr << "Error: Datei " << filepath
-            << " konnte nicht zum Lesen geoeffnet werden. Bitte überprüfen Sie, ob die Datei existiert und im data-Ordner gespeichert ist. Der Dateiname muss zwingend mit .json enden.\n";
+            << " konnte nicht zum Lesen geoeffnet werden. Bitte ueberpruefen Sie, ob die Datei existiert und im data-Ordner gespeichert ist. Der Dateiname muss zwingend mit .json enden.\n";
         return std::nullopt;
     }
 

@@ -1,9 +1,11 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "include/readJson.h"
+#include "readJson.h"
 
 
-TEST_CASE("Äquivalenzklassen und Randwertanalysen für readJson-Funktion") {
+TEST_CASE("Aequivalenzklassen und Randwertanalysen fuer readJson-Funktion") {
+
+    // Test bei korrekten Werten 
     SECTION("Auslesen korrekter Werte") {
         
         WeatherData expectedWeatherData;
@@ -30,16 +32,18 @@ TEST_CASE("Äquivalenzklassen und Randwertanalysen für readJson-Funktion") {
         expectedCarData.Batteriekapazitaet = 75;
         expectedCarData.Durchschn_Verbrauch = 14.7;
 
-        REQUIRE(getWeatherData("Wetterdaten_1.json").has_value());
-        REQUIRE(getWeatherData("Wetterdaten._1json").value() == expectedWeatherData);
+        REQUIRE(getWeatherData("data/Wetterdaten_1.json").has_value());
+        REQUIRE(getWeatherData("data/Wetterdaten_1.json").value() == expectedWeatherData);
 
-        REQUIRE(getRouteData("Streckenprofil_1.json").has_value());
-        REQUIRE(getRouteData("Streckenprofil_1.json").value() == expectedRouteData);
+        REQUIRE(getRouteData("data/Streckenprofil_1.json").has_value());
+        REQUIRE(getRouteData("data/Streckenprofil_1.json").value() == expectedRouteData);
 
-        REQUIRE(getCarData("Fahrzeugparameter_1.json").has_value());
-        REQUIRE(getCarData("Fahrzeugparameter_1.json").value() == expectedCarData);
+        REQUIRE(getCarData("data/Fahrzeugparameter_1.json").has_value());
+        REQUIRE(getCarData("data/Fahrzeugparameter_1.json").value() == expectedCarData);
     }
-    SECTION("Auslesen korrekter Werte aus größeren Json-Dateien") {
+
+    // Test bei zusätzlichen Werten
+    SECTION("Auslesen korrekter Werte aus groeßeren Json-Dateien") {
         
         WeatherData expectedWeatherData;
         expectedWeatherData.Regen = true;
@@ -65,19 +69,75 @@ TEST_CASE("Äquivalenzklassen und Randwertanalysen für readJson-Funktion") {
         expectedCarData.Batteriekapazitaet = 75;
         expectedCarData.Durchschn_Verbrauch = 14.7;
 
-        REQUIRE(getWeatherData("Wetterdaten_Zusatz.json").has_value());
-        REQUIRE(getWeatherData("Wetterdaten_Zusatz.json").value() == expectedWeatherData);
+        REQUIRE(getWeatherData("data/Wetterdaten_Zusatz.json").has_value());
+        REQUIRE(getWeatherData("data/Wetterdaten_Zusatz.json").value() == expectedWeatherData);
 
-        REQUIRE(getRouteData("Streckenprofil_Zusatz.json").has_value());
-        REQUIRE(getRouteData("Streckenprofil_Zusatz.json").value() == expectedRouteData);
+        REQUIRE(getRouteData("data/Streckenprofil_Zusatz.json").has_value());
+        REQUIRE(getRouteData("data/Streckenprofil_Zusatz.json").value() == expectedRouteData);
 
-        REQUIRE(getCarData("Fahrzeugparameter_Zusatz.json").has_value());
-        REQUIRE(getCarData("Fahrzeugparameter_Zusatz.json").value() == expectedCarData);
+        REQUIRE(getCarData("data/Fahrzeugparameter_Zusatz.json").has_value());
+        REQUIRE(getCarData("data/Fahrzeugparameter_Zusatz.json").value() == expectedCarData);
     }
-    SECTION("Reaktion bei ungültigen Werten") {
+
+    // Test bei fehlenden/ ungültigen Werten
+    SECTION("Pruefen der Fehlermeldungen bei ungueltigen Werten") {
         
-        REQUIRE_FALSE(getWeatherData("Wetterdaten_fehlerhaft.json").has_value());
-        REQUIRE_FALSE(getRouteData("Streckenprofil_fehlerhaft.json").has_value());
-        REQUIRE_FALSE(getCarData("Fahrzeugparameter_fehlerhaft.json").has_value());
+        std::stringstream ss;
+        std::streambuf* oldCerr = std::cerr.rdbuf();
+
+        // Testfall: Datei existiert nicht
+        {            
+            std::cerr.rdbuf(ss.rdbuf());
+            getWeatherData("data/nicht_existierend.json");
+            std::cerr.rdbuf(oldCerr);
+
+            std::string errorMessage = ss.str();
+            REQUIRE(errorMessage.find("Error: Datei \"data/nicht_existierend.json\" konnte nicht zum Lesen geoeffnet werden. Bitte ueberpruefen Sie, ob die Datei existiert und im data-Ordner gespeichert ist. Der Dateiname muss zwingend mit .json enden.\n") != std::string::npos);
+            ss.str(""); ss.clear(); 
+        }
+
+        // Testfall: Leere JSON-Datei
+        {
+            std::cerr.rdbuf(ss.rdbuf()); 
+            getWeatherData("data/leere_datei.json");
+            std::cerr.rdbuf(oldCerr); 
+
+            std::string errorMessage = ss.str();
+            REQUIRE(errorMessage.find("Error: JSON-Parsing fehlgeschlagen fuer Datei \"data/leere_datei.json\".") != std::string::npos);
+            ss.str(""); ss.clear();
+        }
+
+        // Testfall: Ungültige JSON-Syntax 
+        {
+            std::cerr.rdbuf(ss.rdbuf()); 
+            getCarData("data/Fahrzeugparameter_ungültig.json");
+            std::cerr.rdbuf(oldCerr); 
+
+            std::string errorMessage = ss.str();
+            REQUIRE(errorMessage.find("Error: JSON-Parsing fehlgeschlagen fuer Datei \"data/Fahrzeugparameter_ungültig.json\".") != std::string::npos);
+            ss.str(""); ss.clear();
+        }
+
+        // Testfall: Fehlender Schlüssel 
+        {
+            std::cerr.rdbuf(ss.rdbuf()); 
+            getRouteData("data/Streckenprofil_fehlender_schluessel.json");
+            std::cerr.rdbuf(oldCerr); 
+
+            std::string errorMessage = ss.str();
+            REQUIRE(errorMessage.find("Error: Ein erforderliches Streckenprofilfeld wurde in der Datei \"data/Streckenprofil_fehlender_schluessel.json\" nicht gefunden oder ist ungueltig.") != std::string::npos);
+            ss.str(""); ss.clear();
+        }
+
+        // Testfall: Falscher Datentyp 
+        {
+            std::cerr.rdbuf(ss.rdbuf()); 
+            getCarData("data/Fahrzeugparameter_falscher_datentyp.json");
+            std::cerr.rdbuf(oldCerr); 
+
+            std::string errorMessage = ss.str();
+            REQUIRE(errorMessage.find("Error: Unerwarteter Datentyp fuer ein Fahrzeugparameterfeld in der Datei \"data/Fahrzeugparameter_falscher_datentyp.json\".") != std::string::npos);
+            ss.str(""); ss.clear();
+        }
     }
 }
