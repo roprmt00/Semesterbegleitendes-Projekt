@@ -152,10 +152,7 @@ Die Wetterfaktoren gelten für die gesamte Fahrt und werden einmalig global aufm
 
 **Zwischensumme (ohne Wetter):**
 
-$$E_{zwischen} =
-  (E_{basis,Stadt} \times f_{v,Stadt} \times f_{H} \times f_{S,Stadt})
-+ (E_{basis,Land} \times f_{v,Land} \times f_{H} \times f_{S,Land})
-+ (E_{basis,AB} \times f_{v,AB} \times f_{H} \times f_{S,AB})$$
+$$E_{zwischen} = (E_{basis,Stadt} \times f_{v,Stadt} \times f_{H} \times f_{S,Stadt}) + (E_{basis,Land} \times f_{v,Land} \times f_{H} \times f_{S,Land}) + (E_{basis,AB} \times f_{v,AB} \times f_{H} \times f_{S,AB})$$
 
 **Gesamtenergieverbrauch:**
 
