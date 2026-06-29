@@ -127,7 +127,7 @@ Falls $D_{gesamt} == 0$, so ist $f_H=1$, andernfalls nutze Formel.
 | $g$ | 9,81 m/$s^2$ | Erdbeschleunigung |
 | $\eta$ | 0,90 | E-Motor Wirkungsgrad |
 | $0,5$ | — | Rekuperationseffizienz 50 % |
-| $3.600{.}000$ | — | Umrechnungsfaktor J → kWh |
+| $3.600.000$ | — | Umrechnungsfaktor J → kWh |
 
 > **Quelle:** ADAC/ÖAMTC: *Rekuperation – Effizienzpotenzial* (2024) — gemessene Rückgewinnung 35–50 %, Mittelwert 50 %,
 > https://www.adac.de/rund-ums-fahrzeug/elektromobilitaet/elektroauto/rekuperation-elektroauto/  
