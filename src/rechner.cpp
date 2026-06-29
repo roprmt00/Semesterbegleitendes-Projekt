@@ -24,9 +24,9 @@ BerechnungsErgebnis berechneReichweite(
 
     // Temperaturfaktor
     double f_T;
-    if      (wetter.Temp < 20.0)  f_T = 1.0 + 0.03 * (20.0 - wetter.Temp);
+    if      (wetter.Temp < 20.0)  f_T = 1.0 + 0.015 * (20.0 - wetter.Temp);
     else if (wetter.Temp <= 25.0) f_T = 1.0;
-    else                                f_T = 1.0 + 0.02 * (wetter.Temp - 25.0);
+    else                                f_T = 1.0 + 0.01  * (wetter.Temp - 25.0);
 
     // Regen-Einflussfaktor
     const double f_R = wetter.Regen ? 1.05 : 1.0;
@@ -35,8 +35,9 @@ BerechnungsErgebnis berechneReichweite(
     const double f_W = 1.0 + 0.01 * pow(wetter.Windgeschw, 2) / 100.0;
 
     // Höhenmeterfaktor
-    const double f_H =
-        1.0 + ((strecke.Hoehenmeter_bergauf       - 0.5 * strecke.Hoehenmeter_bergab)       / 1000.0);
+    const double D_gesamt       = strecke.Distanz_Stadt + strecke.Distanz_Land + strecke.Distanz_Autobahn;
+    const double E_basis_gesamt = (D_gesamt / 100.0) * fahrzeug.Durchschn_Verbrauch;
+    const double f_H = 1.0 + (2000.0 * 9.81 * (strecke.Hoehenmeter_bergauf - 0.5 * strecke.Hoehenmeter_bergab)) / (0.90 * E_basis_gesamt * 3600000.0);
     
     // Streckentypfaktor
     const double f_S_stadt       = 1.15;
@@ -45,7 +46,7 @@ BerechnungsErgebnis berechneReichweite(
 
     // Gesamtenergieverbrauch
     const double E_gesamt =
-        (E_basis_stadt    * f_v_stadt       * f_H       * f_S_stadt)       +
+        (E_basis_stadt    * f_v_stadt       * f_H       * f_S_stadt) +
         (E_basis_land     * f_v_landstrasse * f_H * f_S_landstrasse) +
         (E_basis_autobahn * f_v_autobahn    * f_H    * f_S_autobahn);
 
@@ -58,25 +59,22 @@ BerechnungsErgebnis berechneReichweite(
 
    // Ergebnis
     BerechnungsErgebnis ergebnis;
-    ergebnis.E_verfuegbar   = E_verfuegbar;
-    ergebnis.fahrt_moeglich = (E_gesamt_final <= E_nutzbar);
+    ergebnis.E_verfuegbar     = E_verfuegbar;
+    ergebnis.fahrt_moeglich   = (E_gesamt_final <= E_nutzbar);
+    ergebnis.SoC_erforderlich = ((E_gesamt_final + E_puffer) / fahrzeug.Batteriekapazitaet) * 100.0;
  
     if (ergebnis.fahrt_moeglich) {
         ergebnis.E_reserve         = E_nutzbar - E_gesamt_final;
         ergebnis.fehlende_Energie  = 0.0;   
-        ergebnis.SoC_erforderlich  = 0.0;   
 
     } else {
         ergebnis.E_reserve         = 0.0;   
         ergebnis.fehlende_Energie  = E_gesamt_final - E_nutzbar;
-        ergebnis.SoC_erforderlich  =
-            ((E_gesamt_final + E_puffer) / fahrzeug.Batteriekapazitaet) * 100.0;
     }
 
     return ergebnis;
 
-    }
-    
+}
 
     
 
