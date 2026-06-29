@@ -69,13 +69,13 @@ Die genaue Berechnung des Energiebedarfs basiert auf folgenden Annahmen:
 ```mermaid
 classDiagram
 
-    class Fahrzeugparameter.json {
+    class Fahrzeugparameter_json {
         +Name: string
         +Batteriekapazitaet: double
         +Durchschn_Verbrauch: double
     }
 
-    class Wetterdaten.json {
+    class Wetterdaten_json {
         +Regen: bool
         +Temp: double
         +Windgeschw: double
@@ -83,7 +83,7 @@ classDiagram
         +Rueckenwind: bool
     }
 
-    class Streckenprofil.json {
+    class Streckenprofil_json {
         +Name: string
         +Distanz: double
         +Distanz_Land: double
@@ -102,7 +102,7 @@ classDiagram
         +Durchschn_Verbrauch: double
     }
 
-    class WatherData {
+    class WeatherData {
         +Regen: bool
         +Temp: double
         +Windgeschw: double
