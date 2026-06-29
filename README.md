@@ -7,6 +7,20 @@ Die Anwendung berechnet, ob eine geplante Fahrt mit einem Elektrofahrzeug mit de
 - Ist die Fahrt **möglich** → Ausgabe der verbleibenden Energiereserve
 - Ist die Fahrt **nicht möglich** → Ausgabe der fehlenden Energie und des erforderlichen Mindest-SoC
 
+## Funktionsweise und Anwendung des Programms
+
+Um das Programm zu starten muss die Datei main.cpp zuerst kompilliert und die daraus folgende .exe-Datei  ausgeführt werden. Folgende Befehle sind zu verwenden:
+
+in Git Bash: g++ src/main.cpp src/readJson.cpp src/rechner.cpp -I include -o main.exe
+in cmd: .\main.exe
+
+Nach dem Ausführen der .exe wird der Benutzer im Terminal in folgender Reihenfolge nach den Dateinamen gefragt: Wetterdaten, Streckenprofil und Fahrzeugparameter. Im Ordner "data" stehen dafür jeweils drei Profile zur Verfügung, die auch nach Belieben kombiniert werden können. Es sollten jedoch nur die mit 1-3 markierten Dateien verwendet werden, da alle anderen für die Durchführung der Tests gedacht sind und Fehler hervorrufen können. Die Dateinamenerweiterung ".json" muss stets mit angegeben werden.
+Die Eingabeaufforderungen laufen in Schleifen, was bedeutet, dass der Benutzer die Möglichkeit hat, sich nach falscher oder ungültiger Eingabe so oft er will zu korrigieren. Die nächste Eingabeaufforderung beginnt erst, wenn die vorherige erfolgreich war. Nach einer erfolgreichen Eingabe werden die in der JSON-Datei gespeicherten Werte im Terminal ausgegeben.
+Zuletzt wird der Benutzer noch aufgefordert den aktuellen Ladezustand (in Prozent) seines Fahrzeugs anzugeben, dabei werden nur Werte zwischen 0.0 und 100.0 akzeptiert. Auch die Eingabe läuft in einer Schleife und kann beliebig oft wiederholt werden.
+Waren alle Eingaben erfolgreich führt das Programm eine Berechnung durch und gibt dem Benutzer an, ob die Fahrt möglich ist oder nicht. Ist die Fahrt möglich werden zudem die Energiereserve und die mindestens benötigte Akkuladung ausgegeben, ist die Fahrt dagegen nicht möglich wird die fehlende Energie und ebenfalls die mindestens benötigte Akkuladung angezeigt.
+
+Der Benutzer hat zu jedem Zeitpunkt die Möglichkeit durch Eingabe von "end" im Terminal das Programm abzubrechen und zu beenden.
+
 ## Tests
 
 ### Test zum Auslesen der JSON-Dateien
