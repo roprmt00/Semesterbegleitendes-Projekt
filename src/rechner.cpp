@@ -37,7 +37,10 @@ BerechnungsErgebnis berechneReichweite(
     // Höhenmeterfaktor
     const double D_gesamt       = strecke.Distanz_Stadt + strecke.Distanz_Land + strecke.Distanz_Autobahn;
     const double E_basis_gesamt = (D_gesamt / 100.0) * fahrzeug.Durchschn_Verbrauch;
-    const double f_H = 1.0 + (2000.0 * 9.81 * (strecke.Hoehenmeter_bergauf - 0.5 * strecke.Hoehenmeter_bergab)) / (0.90 * E_basis_gesamt * 3600000.0);
+    double f_H = 1.0;
+    if (E_basis_gesamt > 0.0) { 
+        f_H = 1.0 + (2000.0 * 9.81 * (strecke.Hoehenmeter_bergauf - 0.5 * strecke.Hoehenmeter_bergab)) / (0.90 * E_basis_gesamt * 3600000.0);
+    }
     
     // Streckentypfaktor
     const double f_S_stadt       = 1.15;
