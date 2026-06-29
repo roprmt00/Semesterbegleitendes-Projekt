@@ -183,16 +183,16 @@ $$\text{fahrtmoeglich} = \begin{cases}
 
 ### 3.3 Ergebniswerte (BerechnungsErgebnis)
 
+$$SoC_{erforderlich} = \frac{E_{gesamt} + E_{puffer}}{E_{bat}} \times 100$$
+
 **Falls fahrt_moeglich = true:**
 
 $$E_{reserve} = E_{nutzbar} - E_{gesamt}$$
 
-$$\Delta E = 0, \quad SoC_{erforderlich} = 0 \quad \text{(nicht benötigt)}$$
+$$\Delta E = 0 \quad \text{(nicht benötigt)}$$
 
 **Falls fahrt_moeglich = false:**
 
 $$\Delta E = E_{gesamt} - E_{nutzbar}$$
-
-$$SoC_{erforderlich} = \frac{E_{gesamt} + E_{puffer}}{E_{bat}} \times 100$$
 
 $$E_{reserve} = 0 \quad \text{(nicht benötigt)}$$
