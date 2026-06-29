@@ -9,17 +9,36 @@ Die Anwendung berechnet, ob eine geplante Fahrt mit einem Elektrofahrzeug mit de
 
 ## Tests
 
+### Test zum Auslesen der JSON-Dateien
+
+Um den Test zu starten, geben Sie folgende Befehle ein:
+
+in Git Bash: g++ test/ReadJsonTest.cpp src/readJson.cpp -I include -o ReadJsonTest.exe
+in cmd: .\ReadJsonTest.exe
+
+#### Testfälle Auslesen der JSONs
+
+Dieser Test überprüft das Verhalten der drei Funktionen innerhalb von readJson.cpp, welche dazu dienen die Wetterdaten, das Streckenprofil und die Fahrzeugparameter auszulesen. Allerdings werden nur für die ersten beiden Testfälle (Regelfall und Zusatzwerte) alle drei Funktionen geteste. Die anderen Testfälle werden immer abwechselnd an einer der drei Funktionen durchgeführt, da sie sich in ihrer Reaktion im Fehlerfall nicht unterscheiden
+Die Testfälle sind in `ReadJsonTest.cpp` mit Catch2 implementiert und decken folgende Szenarien ab:
+
+| Testfall                   | Beschreibung                                                                               |
+|----------                  |--------------                                                                              |
+| Regelfall                  | Werte sind fehlerfrei, Test wird für alle drei Funktionen ausgeführt                       |
+| JSON mit Zusatzwerten      | die JSON-Dateien enthalten zusätzliche Werte, Test wird für alle drei Funktionen ausgeführt|
+| nicht-existente Datei      | die übergebene Datei existiert nicht oder liegt in einem anderen Verzeichnis               |
+| leere JSON                 | die JSON-Datei ist leer                                                                    |
+| ungültige JSON             | der Syntax der JSON-Datei ist ungültig                                                     |
+| fehlende Werte             | ein oder mehrere von der Funktion erwartete Werte fehlen                                   |
+| falscher Datentyp          | ein oder mehr Werte enhalten einen anderen Datentypen, als die Funktion es erwartet        |
+
 ### Rechnertest
 
-Um den Test zu starten, geben Sie folgende Befehle ein (von der KI übernommen):
+Um den Test zu starten, geben Sie folgende Befehle ein:
 
-```bash
-cd test
-g++ -std=c++17 -I../include -o rechnerTest rechnerTest.cpp ../src/rechner.cpp
-./rechnerTest
-```
+in Git Bash: g++ test/rechnerTest.cpp src/rechner.cpp -I include -o rechnerTest.exe
+in cmd: .\rechnerTest.exe
 
-## Testfälle
+#### Testfälle Rechnertest
 
 Die Testfälle sind in `rechnerTest.cpp` mit Catch2 implementiert und decken folgende Szenarien ab:
 
@@ -44,6 +63,98 @@ Die genaue Berechnung des Energiebedarfs basiert auf folgenden Annahmen:
 | **Energiepuffer**   | 10 % der Batteriekapazität werden als Reserve betrachtet                            |
 
 ## UML-Diagramme
+
+### Klassendiagramm für das Auslesen der JSONs
+
+```mermaid
+classDiagram
+
+    class Fahrzeugparameter.json {
+        +Name: string
+        +Batteriekapazitaet: double
+        +Durchschn_Verbrauch: double
+    }
+
+    class Wetterdaten.json {
+        +Regen: bool
+        +Temp: double
+        +Windgeschw: double
+        +Gegenwind: bool
+        +Rueckenwind: bool
+    }
+
+    class Streckenprofil.json {
+        +Name: string
+        +Distanz: double
+        +Distanz_Land: double
+        +Distanz_Stadt: double
+        +Distanz_Autobahn: double
+        +Durchschnitt_Land: double
+        +Durchschnitt_Stadt: double
+        +Durchschnitt_Autobahn: double
+        +Hoehenmeter_bergauf: double
+        +Hoehenmeter_bergab: double
+    }
+
+    class CarData {
+        +Name: string
+        +Batteriekapazitaet: double
+        +Durchschn_Verbrauch: double
+    }
+
+    class WatherData {
+        +Regen: bool
+        +Temp: double
+        +Windgeschw: double
+        +Gegenwind: bool
+        +Rueckenwind: bool
+    }
+
+    class RouteData {
+        +Name: string
+        +Distanz: double
+        +Distanz_Land: double
+        +Distanz_Stadt: double
+        +Distanz_Autobahn: double
+        +Durchschnitt_Land: double
+        +Durchschnitt_Stadt: double
+        +Durchschnitt_Autobahn: double
+        +Hoehenmeter_bergauf: double
+        +Hoehenmeter_bergab: double
+    }
+
+    class getCarData {
+        <>
+        +getCarData(filename: Fahrzeugparameter_json) CarData
+    }
+
+    class getWeatherData {
+        <>
+        +getWeatherData(filename: Wetterdaten_json) WeatherData
+    }
+
+    class getRouteData {
+        <>
+        +getRouteData(filename: Streckenprofil_json) RouteData
+    }
+
+    class ReadJsonTest {
+        <>
+        +TEST_CASE_Regelfall()
+        +TEST_CASE_Zusatzwerte()
+        +TEST_CASE_Fehlerfälle()
+    }
+
+    Fahrzeugparameter_json   ..> getCarData : use
+    Wetterdaten_json         ..> getWeatherData : use
+    Streckenprofil_json      ..> getRouteData : use
+    getCarData               ..> CarData : creates
+    getWeatherData           ..> WeatherData : creates
+    getRouteData             ..> RouteData : creates
+    ReadJsonTest             ..> getCarData : tests
+    ReadJsonTest             ..> getWeatherData : tests
+    ReadJsonTest             ..> getRouteData : tests
+```
 
 ### Klassendiagramm für die Rechnung
 
