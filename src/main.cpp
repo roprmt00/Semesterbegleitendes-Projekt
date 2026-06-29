@@ -22,7 +22,8 @@ int main() {
     std::cout << "Starte das Programm zum Lesen der JSON-Daten..." << std::endl;
 
     std::cout << "Bitte geben Sie den Namen der Datei fuer die Wetterdaten ein" << std::endl;
-    std::cin >> Json_WeatherData; 
+    std::cin >> Json_WeatherData;
+    Json_WeatherData = "data/" + Json_WeatherData; 
 
     // --- Wetterdaten lesen ---
     std::cout << "\nVersuche Wetterdaten zu lesen..." << std::endl;
@@ -42,6 +43,7 @@ int main() {
 
     std::cout << "Bitte geben Sie den Namen der Datei fuer das Streckenprofil ein" << std::endl;
     std::cin >> Json_RouteData; 
+    Json_RouteData = "data/" + Json_RouteData;
 
     // --- Streckenprofildaten lesen ---
     std::cout << "\nVersuche Streckenprofildaten zu lesen..." << std::endl;
@@ -66,6 +68,7 @@ int main() {
 
     std::cout << "Bitte geben Sie den Namen der Datei fuer die Fahrzeugparameter ein" << std::endl;
     std::cin >> Json_CarData; 
+    Json_CarData = "data/" + Json_CarData;
     
     // --- Fahrzeugparameter lesen ---
     std::cout << "\nVersuche Fahrzeugparameter zu lesen..." << std::endl;
