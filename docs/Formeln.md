@@ -153,9 +153,9 @@ Die Wetterfaktoren gelten für die gesamte Fahrt und werden einmalig global aufm
 **Zwischensumme (ohne Wetter):**
 
 $$E_{zwischen} =
-  (E_{basis,Stadt}   \times f_{v,Stadt}   \times f_{H} \times f_{S,Stadt})
-+ (E_{basis,Land}    \times f_{v,Land}    \times f_{H} \times f_{S,Land})
-+ (E_{basis,AB}      \times f_{v,AB}      \times f_{H} \times f_{S,AB})$$
+  (E_{basis,Stadt} \times f_{v,Stadt} \times f_{H} \times f_{S,Stadt})
++ (E_{basis,Land} \times f_{v,Land} \times f_{H} \times f_{S,Land})
++ (E_{basis,AB} \times f_{v,AB} \times f_{H} \times f_{S,AB})$$
 
 **Gesamtenergieverbrauch:**
 
@@ -167,7 +167,7 @@ $$E_{gesamt} = E_{zwischen} \times f_T \times f_R \times f_W$$
 
 $$E_{verfügbar} = \frac{SoC}{100} \times E_{bat}$$
 
-$$E_{puffer} = 0{,}1 \times E_{bat}$$
+$$E_{puffer} = 0,1 \times E_{bat}$$
 
 $$E_{nutzbar} = E_{verfügbar} - E_{puffer}$$
 
@@ -175,7 +175,7 @@ $$E_{nutzbar} = E_{verfügbar} - E_{puffer}$$
 
 ### 3.2 Fahrtmachbarkeit
 
-$$\text{fahrt\_moeglich} = \begin{cases}
+$$\text{fahrtmoeglich} = \begin{cases}
 \text{true}  & \text{wenn } E_{gesamt} \leq E_{nutzbar} \\
 \text{false} & \text{wenn } E_{gesamt} > E_{nutzbar}
 \end{cases}$$
@@ -190,7 +190,7 @@ $$E_{reserve} = E_{nutzbar} - E_{gesamt}$$
 
 $$\Delta E = 0, \quad SoC_{erforderlich} = 0 \quad \text{(nicht benötigt)}$$
 
-**Falls fahrt_moeglich = false`:**
+**Falls fahrt_moeglich = false:**
 
 $$\Delta E = E_{gesamt} - E_{nutzbar}$$
 
