@@ -1,0 +1,14 @@
+{
+  "Name": "HS Esslingen - Frankfurt Flughafen",
+  "Distanz": 200,
+  "Distanz Land": 20.7,
+  "Distanz Stadt": 1.5,
+  "Distanz Autobahn": 177.8,
+  "Durchschnitt Land": 75,
+  "Durchschnitt Stadt": 25,
+  "Durchschnitt Autobahn": 125,
+  "Hoehenmeter bergauf": 550,
+  "Hoehenmeter bergab": 680,
+  "Verkehrsaufkommen": "stark",
+  "Stau in km": 20
+}

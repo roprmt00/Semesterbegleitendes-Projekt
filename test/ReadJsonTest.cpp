@@ -30,14 +30,14 @@ TEST_CASE("Äquivalenzklassen und Randwertanalysen für readJson-Funktion") {
         expectedCarData.Batteriekapazitaet = 75;
         expectedCarData.Durchschn_Verbrauch = 14.7;
 
-        REQUIRE(getWeatherData("Wetterdaten.json").has_value());
-        REQUIRE(getWeatherData("Wetterdaten.json").value() == expectedWeatherData);
+        REQUIRE(getWeatherData("Wetterdaten_1.json").has_value());
+        REQUIRE(getWeatherData("Wetterdaten._1json").value() == expectedWeatherData);
 
-        REQUIRE(getRouteData("Streckenprofil.json").has_value());
-        REQUIRE(getRouteData("Streckenprofil.json").value() == expectedRouteData);
+        REQUIRE(getRouteData("Streckenprofil_1.json").has_value());
+        REQUIRE(getRouteData("Streckenprofil_1.json").value() == expectedRouteData);
 
-        REQUIRE(getCarData("Fahrzeugparameter.json").has_value());
-        REQUIRE(getCarData("Fahrzeugparameter.json").value() == expectedCarData);
+        REQUIRE(getCarData("Fahrzeugparameter_1.json").has_value());
+        REQUIRE(getCarData("Fahrzeugparameter_1.json").value() == expectedCarData);
     }
     SECTION("Auslesen korrekter Werte aus größeren Json-Dateien") {
         
