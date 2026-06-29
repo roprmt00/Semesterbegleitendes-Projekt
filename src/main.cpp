@@ -1,7 +1,7 @@
 #include "readJson.h" 
 #include "rechner.h"
 #include <iostream>
-#include <filesystem> // Für std::filesystem::path
+#include <filesystem> 
 #include <sstream>
 
 using string = std::string;
@@ -24,6 +24,7 @@ int main() {
     
     std::cout << "Starte das Programm zum Lesen der JSON-Daten..." << std::endl;
 
+    // Abfrage der JSON-Datei für die Wetterdaten
     std::cout << "Bitte geben Sie den Namen der Datei fuer die Wetterdaten ein" << std::endl;
     while(w == 1) {
     std::cin >> Json_WeatherData;
@@ -34,11 +35,11 @@ int main() {
         return 0;
     }
 
-    // --- Wetterdaten lesen ---
+    // Wetterdaten lesen
     std::cout << "\nVersuche Wetterdaten zu lesen..." << std::endl;
 
     weather = getWeatherData(Json_WeatherData);
-    if (weather) { // Annahme: Datei für Wetterdaten liegt im selben Verzeichnis wie die ausführbare Datei
+    if (weather) { 
         std::cout << "Wetterdaten erfolgreich geladen:" << std::endl;
         std::cout << "  Temperatur: " << weather->Temp << " Grad Celsius" << std::endl;
         std::cout << "  Windgeschwindigkeit: " << weather->Windgeschw << " km/h" << std::endl;
@@ -53,7 +54,7 @@ int main() {
     }
     }
 
-
+    // Abfrage der JSON-Datei für die Streckenprofildaten
     std::cout << "Bitte geben Sie den Namen der Datei fuer das Streckenprofil ein" << std::endl;
     while(r == 1) {
     std::cin >> Json_RouteData; 
@@ -64,11 +65,11 @@ int main() {
         return 0;
     }
 
-    // --- Streckenprofildaten lesen ---
+    // Streckenprofildaten lesen
     std::cout << "\nVersuche Streckenprofildaten zu lesen..." << std::endl;
 
     route = getRouteData(Json_RouteData);
-    if (route) { // Annahme: Datei für Streckenprofil liegt im selben Verzeichnis wie die ausführbare Datei
+    if (route) { 
         std::cout << "Streckenprofildaten erfolgreich geladen:" << std::endl;
         std::cout << "  Name: " << route->Name << std::endl;
         std::cout << "  Distanz: " << route->Distanz << " km" << std::endl;
@@ -88,6 +89,7 @@ int main() {
     }
     }
 
+    // Abfrage der JSON-Datei für die Fahrzeugparameter
     std::cout << "Bitte geben Sie den Namen der Datei fuer die Fahrzeugparameter ein" << std::endl;
     while(c == 1) {
     std::cin >> Json_CarData; 
@@ -98,11 +100,11 @@ int main() {
         return 0;
     }
     
-    // --- Fahrzeugparameter lesen ---
+    // Fahrzeugparameter lesen
     std::cout << "\nVersuche Fahrzeugparameter zu lesen..." << std::endl;
 
     car = getCarData(Json_CarData);
-    if (car) { // Annahme: Datei für Fahrzeugparameter liegt im selben Verzeichnis wie die ausführbare Datei
+    if (car) { 
         std::cout << "Fahrzeugparameter erfolgreich geladen:" << std::endl;
         std::cout << "  Name: " << car->Name << std::endl;
         std::cout << "  Batteriekapazitaet: " << car->Batteriekapazitaet << " kWh" << std::endl;
@@ -114,6 +116,7 @@ int main() {
     }
     }
 
+    // Abfrage des aktuellen Ladezustands
     while(!valid_input) {
     std::cout << "\nBitte geben Sie zuletzt den aktuellen Ladezustand (SoC) ihres Autos ein. Der Wert muss zwischen 0.0 und 100.0 liegen." << std::endl;
     std::cin >> SoC_input;
@@ -140,10 +143,11 @@ int main() {
     }
     } 
 
+    // Funktion zur Berechnung wird aufgerufen
     std::cout << "\nBerechnungen werden durchgefuehrt..." << std::endl;
 
     result = berechneReichweite(car.value(), route.value(), weather.value(), SoC);
-    if (result) { // Annahme: Datei für Fahrzeugparameter liegt im selben Verzeichnis wie die ausführbare Datei
+    if (result) { 
         std::cout << "Reichweite erfolgreich berechnet:" << std::endl;
         std::cout << "  Verfuegbare Energie: " << result->E_verfuegbar << " kWh" << std::endl;
         if(result->fahrt_moeglich == true) {

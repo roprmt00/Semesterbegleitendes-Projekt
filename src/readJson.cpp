@@ -10,7 +10,7 @@
 using json = nlohmann::json;
 using string = std::string;
     
-
+// Funktion zum Auslesen der Wetterdaten
 std::optional<WeatherData> getWeatherData(const std::filesystem::path& filepath) {
     
     // Datei zum Lesen öffnen
@@ -27,7 +27,7 @@ std::optional<WeatherData> getWeatherData(const std::filesystem::path& filepath)
         weatherData = json::parse(inFile);
     } catch (const json::parse_error& e) {
         std::cerr << "Error: JSON-Parsing fehlgeschlagen fuer Datei " << filepath << ". Fehler: " << e.what() << '\n';
-        inFile.close(); // Sicherstellen, dass die Datei geschlossen wird
+        inFile.close(); 
         return std::nullopt;
     }
     inFile.close();
@@ -52,6 +52,7 @@ std::optional<WeatherData> getWeatherData(const std::filesystem::path& filepath)
     return Daten;
 }
 
+// Funktion zum Auslesen des Streckenprofils
 std::optional<RouteData> getRouteData(const std::filesystem::path& filepath) {
     
     // Datei zum Lesen öffnen
@@ -68,7 +69,7 @@ std::optional<RouteData> getRouteData(const std::filesystem::path& filepath) {
         routeData = json::parse(inFile);
     } catch (const json::parse_error& e) {
         std::cerr << "Error: JSON-Parsing fehlgeschlagen fuer Datei " << filepath << ". Fehler: " << e.what() << '\n';
-        inFile.close(); // Sicherstellen, dass die Datei geschlossen wird
+        inFile.close(); 
         return std::nullopt;
     }
     inFile.close();
@@ -98,6 +99,7 @@ std::optional<RouteData> getRouteData(const std::filesystem::path& filepath) {
     return Daten;
 }
 
+// Funktion zum Auslesen der Fahrzeugparameter
 std::optional<CarData> getCarData(const std::filesystem::path& filepath) {
     
     // Datei zum Lesen öffnen
@@ -114,7 +116,7 @@ std::optional<CarData> getCarData(const std::filesystem::path& filepath) {
         carData = json::parse(inFile);
     } catch (const json::parse_error& e) {
         std::cerr << "Error: JSON-Parsing fehlgeschlagen fuer Datei " << filepath << ". Fehler: " << e.what() << '\n';
-        inFile.close(); // Sicherstellen, dass die Datei geschlossen wird
+        inFile.close(); 
         return std::nullopt;
     }
     inFile.close();

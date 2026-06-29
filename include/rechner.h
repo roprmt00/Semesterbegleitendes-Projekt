@@ -4,22 +4,19 @@
 #include "readJson.h" 
 
 //Struktur für die Ausgabe
-
 struct BerechnungsErgebnis {
-    double E_verfuegbar;         // Verfügbare Energie [kWh]          
-    bool   fahrt_moeglich;       // Ob die Fahrt möglich ist          
+    double E_verfuegbar;                 
+    bool   fahrt_moeglich;               
  
-    // Wenn Fahrt möglich, dann:
-    double E_reserve;            // Verbleibende Reserve [kWh]
+    // Wenn Fahrt möglich
+    double E_reserve;            
  
-    // Wenn Fahrt nicht möglich, dann:
-    double fehlende_Energie;     // Fehlende Energie [kWh]
+    // Wenn Fahrt nicht möglich
+    double fehlende_Energie;     
     double SoC_erforderlich; 
-        // Mindest-Ladezustand [%]
 };
 
 // Funktionsdeklaration
-
 BerechnungsErgebnis berechneReichweite(
     const CarData&  fahrzeug,
     const RouteData&   strecke,

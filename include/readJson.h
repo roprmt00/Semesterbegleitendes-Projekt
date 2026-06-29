@@ -64,7 +64,7 @@ struct CarData {
     }
 };
 
-
+// Deklarationen der drei Funktionen zum Auslesen der JSON-Dateien
 std::optional<WeatherData> getWeatherData(const std::filesystem::path& filepath);
 std::optional<RouteData> getRouteData(const std::filesystem::path& filepath);
 std::optional<CarData> getCarData(const std::filesystem::path& filepath);
