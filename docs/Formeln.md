@@ -115,17 +115,19 @@ $$f_{W} = 1 + \frac{0{,}01 \times W^2}{100}$$
 
 Basierend auf $E_{pot} = m \cdot g \cdot h$ wird der Höheneinfluss relativ zum Basisverbrauch ausgedrückt:
 
-$$f_H = 1 + \frac{m \cdot g \cdot (H_{auf} - 0{,}5 \times H_{ab})}{\eta \cdot E_{basis,gesamt} \cdot 3{.}600{.}000}$$
+$$f_H = 1 + \frac{m \cdot g \cdot (H_{auf} - 0,5 \times H_{ab})}{\eta \cdot E_{basis,gesamt} \cdot 3.600.000}$$
 
 mit $E_{basis,gesamt} = \frac{D_{gesamt}}{100} \times V_{basis}$
+
+Falls $D_{gesamt} == 0$, so ist $f_H=1$, andernfalls nutze Formel.  
 
 | Parameter | Wert | Beschreibung |
 |-----------|------|--------------|
 | $m$ | 2000 kg | Typische Fahrzeugmasse inkl. Fahrer |
-| $g$ | 9,81 m/s² | Erdbeschleunigung |
+| $g$ | 9,81 m/$s^2$ | Erdbeschleunigung |
 | $\eta$ | 0,90 | E-Motor Wirkungsgrad |
-| $0{,}5$ | — | Rekuperationseffizienz 50 % |
-| $3{.}600{.}000$ | — | Umrechnungsfaktor J → kWh |
+| $0,5$ | — | Rekuperationseffizienz 50 % |
+| $3.600{.}000$ | — | Umrechnungsfaktor J → kWh |
 
 > **Quelle:** ADAC/ÖAMTC: *Rekuperation – Effizienzpotenzial* (2024) — gemessene Rückgewinnung 35–50 %, Mittelwert 50 %,
 > https://www.adac.de/rund-ums-fahrzeug/elektromobilitaet/elektroauto/rekuperation-elektroauto/  
