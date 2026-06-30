@@ -11,9 +11,17 @@ Die Anwendung berechnet, ob eine geplante Fahrt mit einem Elektrofahrzeug mit de
 
 Um das Programm zu starten muss die Datei main.cpp zuerst kompilliert und die daraus folgende .exe-Datei  ausgeführt werden. Folgende Befehle sind zu verwenden:
 
-in Git Bash: g++ src/main.cpp src/readJson.cpp src/rechner.cpp -I include -o main.exe
+in Git Bash:
 
-in cmd: .\main.exe
+```bash
+g++ src/main.cpp src/readJson.cpp src/rechner.cpp -I include -o main.exe
+```
+
+in cmd:
+
+```cmd
+.\main.exe
+```
 
 Nach dem Ausführen der .exe wird der Benutzer im Terminal in folgender Reihenfolge nach den Dateinamen gefragt: Wetterdaten, Streckenprofil und Fahrzeugparameter. Im Ordner "data" stehen dafür jeweils drei Profile zur Verfügung, die auch nach Belieben kombiniert werden können. Es sollten jedoch nur die mit 1-3 markierten Dateien verwendet werden, da alle anderen für die Durchführung der Tests gedacht sind und Fehler hervorrufen können. Die Dateinamenerweiterung ".json" muss stets mit angegeben werden.
 Die Eingabeaufforderungen laufen in Schleifen, was bedeutet, dass der Benutzer die Möglichkeit hat, sich nach falscher oder ungültiger Eingabe so oft er will zu korrigieren. Die nächste Eingabeaufforderung beginnt erst, wenn die vorherige erfolgreich war. Nach einer erfolgreichen Eingabe werden die in der JSON-Datei gespeicherten Werte im Terminal ausgegeben.
@@ -28,9 +36,17 @@ Der Benutzer hat zu jedem Zeitpunkt die Möglichkeit durch Eingabe von "end" im 
 
 Um den Test zu starten, geben Sie folgende Befehle ein:
 
-in Git Bash: g++ test/ReadJsonTest.cpp src/readJson.cpp -I include -o ReadJsonTest.exe
+in Git Bash:
 
-in cmd: .\ReadJsonTest.exe
+```bash
+g++ test/ReadJsonTest.cpp src/readJson.cpp -I include -o ReadJsonTest.exe
+```
+
+in cmd:
+
+```cmd
+.\ReadJsonTest.exe
+```
 
 #### Testfälle Auslesen der JSONs
 
@@ -51,9 +67,17 @@ Die Testfälle sind in `ReadJsonTest.cpp` mit Catch2 implementiert und decken fo
 
 Um den Test zu starten, geben Sie folgende Befehle ein:
 
-in Git Bash: g++ test/rechnerTest.cpp src/rechner.cpp -I include -o rechnerTest.exe
+in Git Bash:
 
-in cmd: .\rechnerTest.exe
+```bash
+g++ test/rechnerTest.cpp src/rechner.cpp -I include -o rechnerTest.exe
+```
+
+in cmd:
+
+```cmd
+.\rechnerTest.exe
+```
 
 #### Testfälle Rechnertest
 
