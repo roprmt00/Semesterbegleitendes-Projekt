@@ -20,6 +20,19 @@ Verwendung der KI in der `rechnerTest.cpp`:
 - Kontrolle des Codes --> Approx Schreibweise bei double Vergleich (Flüchtigkeitsfehler)
 - Allgemeine Git-Bash Befehle für das Testen
 
+Verwendung der KI in der `readJson.cpp`:
+
+- SiemensGPT wurde zur Fehlerbehandlung genutzt
+- die Ideen für die Absicherung des Codes mit try-catch, sowie für die Verwendung des std::optional-Datentyps kamen von SiemensGPT
+
+Verwendung der KI in der `readJson.h`:
+
+- die Information, dass Strukturen Operatoren hinzugefügt werden können kam von SiemensGPT
+
+Verwendung der KI in der `ReadJsonTest.h`:
+
+- Hilfe bei der genauen Abfrage der Nachrichten im Fehlerfall
+
 Verwendung der KI in der `README.md`:
 
 - Hilfe bei Synthax eines Klassendiagramms (mermaid...)
