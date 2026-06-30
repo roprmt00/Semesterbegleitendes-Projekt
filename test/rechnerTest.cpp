@@ -22,9 +22,9 @@ RouteData standardStrecke() {
  
 WeatherData standardWetter() {
     WeatherData w;
-    w.Temp        = 22.0;   // Optimalbereich → f_T = 1.0
-    w.Regen       = false;  // f_R = 1.0
-    w.Windgeschw  = 0.0;    // f_W = 1.0
+    w.Temp        = 22.0;   
+    w.Regen       = false;  
+    w.Windgeschw  = 0.0;    
     return w;
 }
 
@@ -40,7 +40,7 @@ TEST_CASE("Normalfall: Fahrt ist möglich") {
  
         BerechnungsErgebnis res = berechneReichweite(f, s, w, 100.0);
  
-        REQUIRE(res.E_verfuegbar == Approx(90.0)); // SoC=100% → E_verfuegbar = 90 kWh
+        REQUIRE(res.E_verfuegbar == Approx(90.0)); 
         REQUIRE(res.fahrt_moeglich == true);
         REQUIRE(res.E_reserve > 0.0);
     }
@@ -72,7 +72,7 @@ TEST_CASE("Normalfall: Fahrt ist möglich") {
     }
 }
 
-// Testfall 2 – Fahrt nicht möglich
+// Testfall 2: Fahrt nicht möglich
 
 TEST_CASE("Normalfall: Fahrt ist nicht möglich") {
 
@@ -83,7 +83,7 @@ TEST_CASE("Normalfall: Fahrt ist nicht möglich") {
  
         BerechnungsErgebnis res = berechneReichweite(f, s, w, 5.0);
  
-        REQUIRE(res.E_verfuegbar == Approx(4.5)); // 5% von 90 kWh = 4.5 kWh
+        REQUIRE(res.E_verfuegbar == Approx(4.5)); 
         REQUIRE(res.fahrt_moeglich == false);
         REQUIRE(res.fehlende_Energie > 0.0);
         REQUIRE(res.SoC_erforderlich > 5.0);
@@ -200,7 +200,7 @@ TEST_CASE("Randwertanalyse") {
         BerechnungsErgebnis res = berechneReichweite(f, s, w, 100.0);
  
         REQUIRE(res.fahrt_moeglich == true);
-        REQUIRE(res.E_reserve == Approx(81.0)); // 90 - 9 (Puffer) = 81 kWh
+        REQUIRE(res.E_reserve == Approx(81.0)); 
     }
  
     SECTION("Temperatur genau 20°C: Grenzwert Temperaturfaktor") {
