@@ -4,114 +4,102 @@
 
 // Meine Werte 
 
-FahrzeugDaten standardFahrzeug() {
-    FahrzeugDaten f;   // ich benutze Kürzeln damit ich die Variablen nicht immer ausschreiben muss
+CarData standardFahrzeug() {
+    CarData f;
     f.Batteriekapazitaet = 90.0;
-    f.Basisverbrauch     = 18.0;
-    f.SoC                = 100.0;
+    f.Durchschn_Verbrauch = 18.0;
     return f;
 }
  
-StreckeDaten standardStrecke() {
-    StreckeDaten s; // ich benutze Kürzeln damit ich die Variablen nicht immer ausschreiben muss
-    s.D_stadt        = 20.0;   s.v_stadt        = 40.0;
-    s.D_landstrasse  = 100.0;  s.v_landstrasse  = 80.0;
-    s.D_autobahn     = 80.0;   s.v_autobahn     = 120.0;
-    s.H_auf_stadt        = 20.0;  s.H_ab_stadt        = 20.0;
-    s.H_auf_landstrasse  = 100.0; s.H_ab_landstrasse  = 100.0;
-    s.H_auf_autobahn     = 50.0;  s.H_ab_autobahn     = 50.0;
+RouteData standardStrecke() {
+    RouteData s;
+    s.Distanz_Stadt        = 20.0;   s.Durchschnitt_Stadt        = 40.0;
+    s.Distanz_Land         = 100.0;  s.Durchschnitt_Land         = 80.0;
+    s.Distanz_Autobahn     = 80.0;   s.Durchschnitt_Autobahn     = 120.0;
+    s.Hoehenmeter_bergauf  = 170.0;  s.Hoehenmeter_bergab        = 170.0;
     return s;
 }
  
-WetterDaten standardWetter() {
-    WetterDaten w; // ich benutze Kürzeln damit ich die Variablen nicht immer ausschreiben muss
-    w.Temperatur         = 22.0;   // Optimalbereich → f_T = 1.0
-    w.Regen              = false;  // f_R = 1.0
-    w.Windgeschwindigkeit = 0.0;   // f_W = 1.0
+WeatherData standardWetter() {
+    WeatherData w;
+    w.Temp        = 22.0;   // Optimalbereich → f_T = 1.0
+    w.Regen       = false;  // f_R = 1.0
+    w.Windgeschw  = 0.0;    // f_W = 1.0
     return w;
 }
 
-// Im folgenden werden verschiedene Tesfälle vorgestellt, 
-// die die funktionalität meiner rechner cpp Datei testen.
-
-//--------------------------------------------------------
 
 // Testfall 1: Normalfall - Fahrt möglich
 
 TEST_CASE("Normalfall: Fahrt ist möglich") {
 
-    SECTION("Standardwerte: Fahrt soll möglich sein") {
-        FahrzeugDaten f = standardFahrzeug();
-        StreckeDaten  s = standardStrecke();
-        WetterDaten   w = standardWetter();
+    SECTION("Standardwerte: Fahrt soll möglich sein!!") {
+        CarData     f = standardFahrzeug();
+        RouteData   s = standardStrecke();
+        WeatherData w = standardWetter();
  
-        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+        BerechnungsErgebnis res = berechneReichweite(f, s, w, 100.0);
  
-        
-        REQUIRE(res.E_verfuegbar == Approx(90.0)); // Verfügbare Energie: SoC=100% → E_verfuegbar = 90 kWh
-        REQUIRE(res.fahrt_moeglich == true); // Fahrt muss möglich sein
-        REQUIRE(res.E_reserve > 0.0); // Reserve muss positiv sein
+        REQUIRE(res.E_verfuegbar == Approx(90.0)); // SoC=100% → E_verfuegbar = 90 kWh
+        REQUIRE(res.fahrt_moeglich == true);
+        REQUIRE(res.E_reserve > 0.0);
     }
  
     SECTION("SoC = 100%, kurze Strecke, große Reserve erwartet") {
-        FahrzeugDaten f = standardFahrzeug();
-        WetterDaten   w = standardWetter();
+        CarData     f = standardFahrzeug();
+        WeatherData w = standardWetter();
  
-        StreckeDaten s = standardStrecke();
-        s.D_stadt       = 5.0;
-        s.D_landstrasse = 10.0;
-        s.D_autobahn    = 10.0;
+        RouteData s = standardStrecke();
+        s.Distanz_Stadt      = 5.0;
+        s.Distanz_Land       = 10.0;
+        s.Distanz_Autobahn   = 10.0;
  
-        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+        BerechnungsErgebnis res = berechneReichweite(f, s, w, 100.0);
  
         REQUIRE(res.fahrt_moeglich == true);
-        REQUIRE(res.E_reserve > 50.0);   // bei so kurzer Strecke muss viel Reserve bleiben
+        REQUIRE(res.E_reserve > 50.0);
     }
  
     SECTION("Optimales Wetter: kein Regen, 22°C, kein Wind") {
-        FahrzeugDaten f = standardFahrzeug();
-        StreckeDaten  s = standardStrecke();
-        WetterDaten   w = standardWetter();   // bereits optimal
+        CarData     f = standardFahrzeug();
+        RouteData   s = standardStrecke();
+        WeatherData w = standardWetter();
  
-        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+        BerechnungsErgebnis res = berechneReichweite(f, s, w, 100.0);
  
         REQUIRE(res.fahrt_moeglich == true);
         REQUIRE(res.E_verfuegbar == Approx(90.0));
     }
-
 }
 
-// Testfall 2  Normalfall – Fahrt nicht möglich
+// Testfall 2 – Fahrt nicht möglich
 
 TEST_CASE("Normalfall: Fahrt ist nicht möglich") {
 
-    SECTION("Sehr niedriger SoC (5%):  Fahrt soll scheitern") {
-        FahrzeugDaten f = standardFahrzeug();
-        f.SoC = 5.0;
+    SECTION("Sehr niedriger SoC (5%): Fahrt soll scheitern") {
+        CarData     f = standardFahrzeug();
+        RouteData   s = standardStrecke();
+        WeatherData w = standardWetter();
  
-        StreckeDaten  s = standardStrecke();
-        WetterDaten   w = standardWetter();
+        BerechnungsErgebnis res = berechneReichweite(f, s, w, 5.0);
  
-        BerechnungsErgebnis res = berechneReichweite(f, s, w);
- 
-        
-        REQUIRE(res.E_verfuegbar == Approx(4.5)); // Verfügbare Energie: 5% von 90 kWh = 4.5 kWh
+        REQUIRE(res.E_verfuegbar == Approx(4.5)); // 5% von 90 kWh = 4.5 kWh
         REQUIRE(res.fahrt_moeglich == false);
-        REQUIRE(res.fehlende_Energie > 0.0);// Fehlende Energie muss positiv sein
-        REQUIRE(res.SoC_erforderlich > 5.0); // Erforderlicher SoC muss über 5% liegen
-        REQUIRE(res.SoC_erforderlich <= 100.0); // Erforderlicher SoC darf nicht über 100% liegen 
+        REQUIRE(res.fehlende_Energie > 0.0);
+        REQUIRE(res.SoC_erforderlich > 5.0);
+        REQUIRE(res.SoC_erforderlich <= 100.0);
     }
  
     SECTION("Sehr lange Strecke: Energie reicht nicht") {
-        FahrzeugDaten f = standardFahrzeug();
-        WetterDaten   w = standardWetter();
+        CarData     f = standardFahrzeug();
+        WeatherData w = standardWetter();
  
-        StreckeDaten s = standardStrecke();
-        s.D_stadt       = 100.0;
-        s.D_landstrasse = 300.0;
-        s.D_autobahn    = 300.0;
+        RouteData s = standardStrecke();
+        s.Distanz_Stadt      = 100.0;
+        s.Distanz_Land       = 300.0;
+        s.Distanz_Autobahn   = 300.0;
  
-        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+        BerechnungsErgebnis res = berechneReichweite(f, s, w, 100.0);
  
         REQUIRE(res.fahrt_moeglich == false);
         REQUIRE(res.fehlende_Energie > 0.0);
@@ -119,39 +107,37 @@ TEST_CASE("Normalfall: Fahrt ist nicht möglich") {
     }
 }
 
-//Testfall 3 Wetterbeindungen
+// Testfall 3: Wetterbedingungen
 
 TEST_CASE("Wettereinflüsse auf das Ergebnis") {
  
     SECTION("Regen erhöht den Verbrauch, Reserve sinkt") {
-        FahrzeugDaten f = standardFahrzeug();
-        StreckeDaten  s = standardStrecke();
+        CarData   f = standardFahrzeug();
+        RouteData s = standardStrecke();
  
-        WetterDaten ohneRegen = standardWetter();
-        WetterDaten mitRegen  = standardWetter();
+        WeatherData ohneRegen = standardWetter();
+        WeatherData mitRegen  = standardWetter();
         mitRegen.Regen = true;
  
-        BerechnungsErgebnis resOhne = berechneReichweite(f, s, ohneRegen);
-        BerechnungsErgebnis resMit  = berechneReichweite(f, s, mitRegen);
+        BerechnungsErgebnis resOhne = berechneReichweite(f, s, ohneRegen, 100.0);
+        BerechnungsErgebnis resMit  = berechneReichweite(f, s, mitRegen,  100.0);
  
-        // Beide möglich, aber mit Regen weniger Reserve
         REQUIRE(resOhne.fahrt_moeglich == true);
         REQUIRE(resMit.fahrt_moeglich  == true);
         REQUIRE(resMit.E_reserve < resOhne.E_reserve);
     }
  
-    SECTION("Kälte (T = -10°C) erhöht Verbrauch deutlich") {
-        FahrzeugDaten f = standardFahrzeug();
-        StreckeDaten  s = standardStrecke();
+    SECTION("Kälte (T = -10°C) erhöht Verbrauch") {
+        CarData   f = standardFahrzeug();
+        RouteData s = standardStrecke();
  
-        WetterDaten optimal = standardWetter();
-        WetterDaten kalt    = standardWetter();
-        kalt.Temperatur = -10.0;
+        WeatherData optimal = standardWetter();
+        WeatherData kalt    = standardWetter();
+        kalt.Temp = -10.0;
  
-        BerechnungsErgebnis resOptimal = berechneReichweite(f, s, optimal);
-        BerechnungsErgebnis resKalt    = berechneReichweite(f, s, kalt);
+        BerechnungsErgebnis resOptimal = berechneReichweite(f, s, optimal, 100.0);
+        BerechnungsErgebnis resKalt    = berechneReichweite(f, s, kalt,    100.0);
  
-        // Bei Kälte muss Reserve kleiner sein (oder Fahrt gar nicht möglich)
         if (resKalt.fahrt_moeglich)
             REQUIRE(resKalt.E_reserve < resOptimal.E_reserve);
         else
@@ -159,15 +145,15 @@ TEST_CASE("Wettereinflüsse auf das Ergebnis") {
     }
  
     SECTION("Starker Wind (100 km/h) erhöht Verbrauch") {
-        FahrzeugDaten f = standardFahrzeug();
-        StreckeDaten  s = standardStrecke();
+        CarData   f = standardFahrzeug();
+        RouteData s = standardStrecke();
  
-        WetterDaten ohneWind = standardWetter();
-        WetterDaten mitWind  = standardWetter();
-        mitWind.Windgeschwindigkeit = 100.0;
+        WeatherData ohneWind = standardWetter();
+        WeatherData mitWind  = standardWetter();
+        mitWind.Windgeschw = 100.0;
  
-        BerechnungsErgebnis resOhne = berechneReichweite(f, s, ohneWind);
-        BerechnungsErgebnis resMit  = berechneReichweite(f, s, mitWind);
+        BerechnungsErgebnis resOhne = berechneReichweite(f, s, ohneWind, 100.0);
+        BerechnungsErgebnis resMit  = berechneReichweite(f, s, mitWind,  100.0);
  
         if (resMit.fahrt_moeglich)
             REQUIRE(resMit.E_reserve < resOhne.E_reserve);
@@ -176,18 +162,16 @@ TEST_CASE("Wettereinflüsse auf das Ergebnis") {
     }
 }
 
-//Testfall 4: Randwerte
+// Testfall 4: Randwerte
 
 TEST_CASE("Randwertanalyse") {
  
     SECTION("SoC = 0%: keine Energie verfügbar") {
-        FahrzeugDaten f = standardFahrzeug();
-        f.SoC = 0.0;
+        CarData     f = standardFahrzeug();
+        RouteData   s = standardStrecke();
+        WeatherData w = standardWetter();
  
-        StreckeDaten s = standardStrecke();
-        WetterDaten  w = standardWetter();
- 
-        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+        BerechnungsErgebnis res = berechneReichweite(f, s, w, 0.0);
  
         REQUIRE(res.E_verfuegbar == Approx(0.0));
         REQUIRE(res.fahrt_moeglich == false);
@@ -195,64 +179,45 @@ TEST_CASE("Randwertanalyse") {
     }
  
     SECTION("SoC = 100%: maximale Energie verfügbar") {
-        FahrzeugDaten f = standardFahrzeug();
-        f.SoC = 100.0;
+        CarData     f = standardFahrzeug();
+        RouteData   s = standardStrecke();
+        WeatherData w = standardWetter();
  
-        StreckeDaten s = standardStrecke();
-        WetterDaten  w = standardWetter();
- 
-        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+        BerechnungsErgebnis res = berechneReichweite(f, s, w, 100.0);
  
         REQUIRE(res.E_verfuegbar == Approx(90.0));
     }
  
-    SECTION("Streckenlänge = 0 km:  kein Verbrauch") {
-        FahrzeugDaten f = standardFahrzeug();
-        WetterDaten   w = standardWetter();
+    SECTION("Streckenlänge = 0 km: kein Verbrauch") {
+        CarData     f = standardFahrzeug();
+        WeatherData w = standardWetter();
  
-        StreckeDaten s = standardStrecke();
-        s.D_stadt       = 0.0;
-        s.D_landstrasse = 0.0;
-        s.D_autobahn    = 0.0;
+        RouteData s = standardStrecke();
+        s.Distanz_Stadt      = 0.0;
+        s.Distanz_Land       = 0.0;
+        s.Distanz_Autobahn   = 0.0;
  
-        BerechnungsErgebnis res = berechneReichweite(f, s, w);
+        BerechnungsErgebnis res = berechneReichweite(f, s, w, 100.0);
  
         REQUIRE(res.fahrt_moeglich == true);
-        REQUIRE(res.E_reserve == Approx(81.0)); // Nutzbare Energie = 90 - 9 (Puffer) = 81 kWh, Verbrauch = 0
+        REQUIRE(res.E_reserve == Approx(81.0)); // 90 - 9 (Puffer) = 81 kWh
     }
  
     SECTION("Temperatur genau 20°C: Grenzwert Temperaturfaktor") {
-        FahrzeugDaten f = standardFahrzeug();
-        StreckeDaten  s = standardStrecke();
+        CarData   f = standardFahrzeug();
+        RouteData s = standardStrecke();
  
-        WetterDaten w20 = standardWetter();
-        w20.Temperatur = 20.0;   // f_T = 1.0  (Grenze unten)
+        WeatherData w20 = standardWetter();
+        w20.Temp = 20.0;
+
+        WeatherData w25 = standardWetter();
+        w25.Temp = 25.0;
  
-        WetterDaten w25 = standardWetter();
-        w25.Temperatur = 25.0;   // f_T = 1.0  (Grenze oben)
+        BerechnungsErgebnis res20 = berechneReichweite(f, s, w20, 100.0);
+        BerechnungsErgebnis res25 = berechneReichweite(f, s, w25, 100.0);
  
-        BerechnungsErgebnis res20 = berechneReichweite(f, s, w20);
-        BerechnungsErgebnis res25 = berechneReichweite(f, s, w25);
- 
-        // gleiches Ergebnis
         if (res20.fahrt_moeglich && res25.fahrt_moeglich)
-            REQUIRE(res20.E_reserve == Approx(res25.E_reserve)); 
+            REQUIRE(res20.E_reserve == Approx(res25.E_reserve));
     }
  
-    SECTION("SoC knapp ausreichend: Grenzfall fahrt_moeglich") {
-
-        FahrzeugDaten f = standardFahrzeug();
-        StreckeDaten  s = standardStrecke();
-        WetterDaten   w = standardWetter();
- 
-        BerechnungsErgebnis resVoll = berechneReichweite(f, s, w);
-        
-        REQUIRE(resVoll.fahrt_moeglich == true); //teste mit 100% SoC, sollte möglich sein
-
-        f.SoC = 10.0;// Mit sehr niedrigem SoC soll es scheitern
-        BerechnungsErgebnis resKnapp = berechneReichweite(f, s, w);
-
-        REQUIRE(resKnapp.fahrt_moeglich == false);
-        REQUIRE(resKnapp.SoC_erforderlich > 10.0);
-    }
 }

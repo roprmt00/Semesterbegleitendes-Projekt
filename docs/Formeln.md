@@ -1,326 +1,198 @@
 # Berechnungen und Formeln
 
-## Übersicht
+Dieses Dokument beschreibt  die mathematischen Formeln, die in rechner.cpp verwendet werden.
 
-Dieses Dokument beschreibt alle mathematischen Formeln und Berechnungen
+## 1. Eingabedaten
 
-## 1.Fahrzeugprofil
+### 1.1 Fahrzeugparameter (CarData)
 
-Dauerhafte Eigenschaften eines Elektrofahrzeugs, z. B
+| Parameter         | Symbol      | Einheit    | Beschreibung                 |
+|-------------------|-------------|------------|------------------------------|
+| Batteriekapazität | $E_{bat}$   | kWh        | Gesamte Batteriekapazität    |
+| Basisverbrauch    | $V_{basis}$ | kWh/100 km | Durchschnittlicher Verbrauch |
 
-- Name
-- Batteriekapazität
-- durchschnittlichen Basisverbrauch.
+### 1.2 Streckenparameter (RouteData)
 
-### Fahrzeugparameter
+Drei feste Segmente: **Stadt**, **Landstraße**, **Autobahn**.
 
-| Parameter         | Symbol      | Einheit   | Beschreibung                 |
-|---------------    |--------     |---------  |--------------                |
-| Batteriekapazität | $E_{bat}$   | kWh       | Gesamte Batteriekapazität    |
-| Basisverbrauch    | $V_{basis}$ | kWh/100km | Durchschnittlicher Verbrauch |
+| Parameter                | Symbol    | Einheit | Beschreibung                 |
+|--------------------------|-----------|---------|------------------------------|
+| Distanz Segment $i$      | $D_i$     | km      | Streckenlänge des Segments   |
+| Geschwindigkeit Seg. $i$ | $v_i$     | km/h    | Durchschnittsgeschwindigkeit |
+| Höhenmeter bergauf       | $H_{auf}$ | m       | Gesamter Aufstieg            |
+| Höhenmeter bergab        | $H_{ab}$  | m       | Gesamter Abstieg             |
 
-## 2.Streckenprofil
+### 1.3 Wetterparameter (WeatherData)
 
-beschreibt eine vereinfachte Fahrtstrecke:
+| Parameter           | Symbol | Einheit | Beschreibung    |
+|---------------------|--------|---------|-----------------|
+| Temperatur          | $T$    | °C      | Außentemperatur |
+| Regen               | $R$    | bool    | true = Regen    |
+| Windgeschwindigkeit | $W$    | km/h    | Gegenwind       |
 
-- Name
-- Gesamtdistanz
-- Strecke mit mehreren Segmenten z. B. Stadt, Landstraße und Autobahn
-- Jedes Segment besitzt eine Distanz und eine Durchnittsgeschwindigkeit
-- Höhenmeter bergauf und bergab
+### 1.4 Ladezustand (eigener Parameter)
 
-### Distanz-Berechnung
+| Parameter   | Symbol | Einheit | Beschreibung            |
+|-------------|--------|---------|-------------------------|
+| Ladezustand | $SoC$  | %       | State of Charge (0–100) |
 
-$$D_{gesamt} = \sum_{i=1}^{n} D_i$$
+## 2. Schritt-für-Schritt-Berechnung
 
-wobei $D_i$ die Distanz des i-ten Segments ist.
-
-**Fahrtzeit pro Segment:**
-
-$$t_i = \frac{D_i}{v_i}$$
-
-wobei $v_i$ die Durchschnittsgeschwindigkeit des Segments ist.
-
-**Gesamtfahrtzeit:**
-
-$$t_{gesamt} = \sum_{i=1}^{n} t_i$$
-
-## 3. Wetterprofil
-
-beschreibt vereinfachte Wetterbedingungen für die Fahrt, z. B.
-
-- Temperatur
-- Regen
-- Windgeschwindigkeit
-
-### Wetterparameter
-
-| Parameter              | Symbol    | Einheit | Bereich      | Beschreibung                     |
-|------------------------|-----------|---------|--------------|----------------------------------|
-| Temperatur             | $T$       | °C      | -20 bis +50  | Außentemperatur                  |
-| Regen                  | $R$       | bool    | true/false   | Regen ja/nein                    |
-| Windgeschwindigkeit    | $W$       | km/h    | 0 bis 100    | Gegenwind/Rückenwind             |
-
-## 4. Energieberechnung
-
-beschreibt die Berechnung des Energieverbrauchs basierend auf Fahrzeug, Strecke und Wetter, z. B.
-
-- Basisenergieverbrauch
-- Wetter-Einflussfaktoren (Temperatur, Regen, Wind)
-- Höhen-Einflussfaktoren (Steigungen, Gefälle)
-- Gesamtenergieverbrauch
-  
-### 4.1 Basisenergieverbrauch
-
-**Energieverbrauch für Segment i:**
+### Schritt 1 – Basisenergieverbrauch pro Segment
 
 $$E_{basis,i} = \frac{D_i}{100} \times V_{basis}$$
 
-**Gesamter Basisverbrauch:**
+Angewendet auf alle drei Segmente:
 
-$$E_{basis} = \sum_{i=1}^{n} E_{basis,i} = \frac{D_{gesamt}}{100} \times V_{basis}$$
+$$E_{basis,Stadt} = \frac{D_{Stadt}}{100} \times V_{basis}, \quad
+E_{basis,Land} = \frac{D_{Land}}{100} \times V_{basis}, \quad
+E_{basis,AB} = \frac{D_{AB}}{100} \times V_{basis}$$
 
-### 4.2 Geschwindigkeits-Einflussfaktor
+> **Herrleitung:** Analogie zur Kraftstoffberechnung bei Verbrennern (Liter/100 km). y (Liter) = x (km) * Verbrauch (Liter/100 km).
 
-Der Energieverbrauch hängt von der Fahrgeschwindigkeit ab. Höhere Geschwindigkeiten führen zu höherem Verbrauch.
+---
 
-**Geschwindigkeitsfaktor pro Segment:**
+### Schritt 2 – Geschwindigkeitsfaktor pro Segment
 
-$$f_{v,i} = 1 + 0.01 \times (v_i - 50)^2 / 100$$
+$$f_{v,i} = 1 + \frac{0{,}01 \times (v_i - 50)^2}{100}$$
 
-**Annahmen:**
+Referenzgeschwindigkeit: 50 km/h → $f_v = 1,0$.
 
-- Referenzgeschwindigkeit: 50 km/h (Basisverbrauch)
-- Bei 50 km/h: $f_{v} = 1.0$ (kein Zusatzverbrauch)
-- Bei 100 km/h: $f_{v} \approx 1.25$ (25% mehr Verbrauch)
-- Bei 130 km/h: $f_{v} \approx 1.64$ (64% mehr Verbrauch)
+| $v_i$ | $f_{v,i}$ |
+|--------|-----------|
+| 50 km/h | 1,00 |
+| 100 km/h | 1,25 |
+| 130 km/h | 1,64 |
 
-### 4.3 Temperatur-Einflussfaktor
+> **Herrleitung:** Die KI hat die Formel erstellt, allerdings wurde versucht,es herzuleiten (Rollwiderstand:konstant bei jeder Geschwindigkeit,Luftwiderstandskraft quadratisch und macht das meiste aus,...):  
+> ![Geschwindigkeitsrechnung](Geschwindigkeitsfaktor.jpeg)
 
-Niedrige Temperaturen erhöhen den Energieverbrauch durch Heizung und reduzierte Batterieleistung.
+---
 
-**Temperaturabhängiger Faktor:**
+### Schritt 3 – Temperaturfaktor (global)
 
 $$f_{T} = \begin{cases}
-1.0 + 0.03 \times (20 - T) & \text{wenn } T < 20°C \\
-1.0 & \text{wenn } 20°C \leq T \leq 25°C \\
-1.0 + 0.02 \times (T - 25) & \text{wenn } T > 25°C
+1,0 + 0,015 \times (20 - T) & T < 20\,°C \\
+1,0                          & 20\,°C \leq T \leq 25\,°C \\
+1,0 + 0,01 \times (T - 25) & T > 25\,°C
 \end{cases}$$
 
-**Annahmen:**
-- Optimale Temperatur: 20-25°C
-- Bei 0°C: $f_{T} = 1.6$ (60% mehr Verbrauch)
-- Bei -20°C: $f_{T} = 2.2$ (120% mehr Verbrauch)
-- Bei 35°C: $f_{T} = 1.2$ (20% mehr Verbrauch durch Klimaanlage)
+| $T$ | $f_T$ |
+|------|--------|
+| −20 °C | 1,60 |
+| 0 °C | 1,30 |
+| 20–25 °C | 1,00 |
+| 35 °C | 1,10 |
 
-### 4.4 Regen-Einflussfaktor
+> **Quelle:** ADAC: *E-Auto im Winter – Mehr Verbrauch, weniger Reichweite* (2024), https://www.adac.de/rund-ums-fahrzeug/elektromobilitaet/laden/elektroauto-reichweite-winter/  
 
-Regen erhöht den Rollwiderstand und den Luftwiderstand.
+---
 
-**Regen-Faktor:**
+### Schritt 4 – Regenfaktor (global)
 
 $$f_{R} = \begin{cases}
-1.05 & \text{wenn Regen = true} \\
-1.0 & \text{wenn Regen = false}
+1,05 & R = \text{true} \\
+1,0  & R = \text{false}
 \end{cases}$$
 
-**Annahmen:**
-- Regen führt zu ca. 5% mehr Verbrauch
+> **Annahme:** Regen führt zu 5% mehr Verbrauch.
 
-### 4.5 Wind-Einflussfaktor
+### Schritt 5 – Windfaktor (global)
 
-Gegenwind erhöht den Luftwiderstand quadratisch.
+$$f_{W} = 1 + \frac{0{,}01 \times W^2}{100}$$
 
-**Wind-Faktor:**
+| $W$ | $f_W$ |
+|------|--------|
+| 0 km/h | 1,00 |
+| 20 km/h | 1,04 |
+| 40 km/h | 1,16 |
 
-$$f_{W} = 1 + 0.001 \times W^2 / 100$$
+> **Herleitung:** Selbe Herleitung wie bei Geschwindigkeitsfaktor, allerdings ohne Referenzgeschwindigkeit. Faktoren  von der KI bestimmt, da keine Quelle gefunden.
 
-wobei $W$ die Windgeschwindigkeit in km/h ist.
+---
 
-**Annahmen:**
-- Bei 20 km/h Gegenwind: $f_{W} \approx 1.04$ (4% mehr Verbrauch)
-- Bei 40 km/h Gegenwind: $f_{W} \approx 1.16$ (16% mehr Verbrauch)
+### Schritt 6 – Höhenfaktor (global)
 
-### 4.6 Höhen-Einflussfaktor
+Basierend auf $E_{pot} = m \cdot g \cdot h$ wird der Höheneinfluss relativ zum Basisverbrauch ausgedrückt:
 
-Steigungen erhöhen den Energieverbrauch, Gefälle reduzieren ihn (Rekuperation).
+$$f_H = 1 + \frac{m \cdot g \cdot (H_{auf} - 0,5 \times H_{ab})}{\eta \cdot E_{basis,gesamt} \cdot 3.600.000}$$
 
-**Höhenfaktor:**
+mit $E_{basis,gesamt} = \frac{D_{gesamt}}{100} \times V_{basis}$
 
-$$f_{H} = 1 + \frac{(H_{auf} - 0.5 \times H_{ab}) \times 10}{D_{gesamt}}$$
+Falls $D_{gesamt} == 0$, so ist $f_H=1$, andernfalls nutze Formel.  
 
-wobei:
-- $H_{auf}$ = Höhenmeter bergauf (m)
-- $H_{ab}$ = Höhenmeter bergab (m)
-- $D_{gesamt}$ = Gesamtdistanz (km)
+| Parameter | Wert | Beschreibung |
+|-----------|------|--------------|
+| $m$ | 2000 kg | Typische Fahrzeugmasse inkl. Fahrer |
+| $g$ | 9,81 m/$s^2$ | Erdbeschleunigung |
+| $\eta$ | 0,90 | E-Motor Wirkungsgrad |
+| $0,5$ | — | Rekuperationseffizienz 50 % |
+| $3.600.000$ | — | Umrechnungsfaktor J → kWh |
 
-**Annahmen:**
-- Bergauf: ca. 10 Wh/m Höhe pro 100 km Strecke
-- Bergab: ca. 50% Rekuperation (Rückgewinnung)
-- Beispiel: 500 m auf, 500 m ab über 100 km: $f_{H} = 1 + \frac{(500 - 250) \times 10}{100} = 1.25$ (25% mehr)
+> **Quelle:** ADAC/ÖAMTC: *Rekuperation – Effizienzpotenzial* (2024) — gemessene Rückgewinnung 35–50 %, Mittelwert 50 %,
+> https://www.adac.de/rund-ums-fahrzeug/elektromobilitaet/elektroauto/rekuperation-elektroauto/  
+> **Herrleitung:** Formel hergeleitet durch KI, allerdings auf Plausabilität mit einfügen von Werten überprüft.
 
-### 4.7 Streckentypabhängiger Faktor
+---
 
-Verschiedene Streckentypen haben unterschiedliche Verbrauchsprofile.
-
-**Streckentypfaktor:**
+### Schritt 7 – Streckentypfaktor pro Segment
 
 $$f_{S,i} = \begin{cases}
-1.15 & \text{wenn Typ = "Stadt"} \\
-1.0 & \text{wenn Typ = "Landstraße"} \\
-0.95 & \text{wenn Typ = "Autobahn"}
+1,15 & \text{Stadt} \\
+1,00 & \text{Landstraße} \\
+0,95 & \text{Autobahn}
 \end{cases}$$
 
-**Annahmen:**
-- Stadt: Häufiges Bremsen und Beschleunigen → 15% mehr Verbrauch
-- Landstraße: Durchschnittlicher Verbrauch (Referenz)
-- Autobahn: Konstante Geschwindigkeit, weniger Bremsenergie → 5% weniger (aber Geschwindigkeitsfaktor wirkt sich aus)
+> **Annahme:** Vereinfachte Modellannahme. Stadt: häufiges Bremsen und Beschleunigen (+15 %). Landstraße: Referenz. Autobahn: konstantere Geschwindigkeit (−5 %).
 
-### 4.8 Gesamtenergieverbrauch
+---
 
-**Energieverbrauch pro Segment:**
+### Schritt 8 – Gesamtenergieverbrauch
 
-$$E_i = E_{basis,i} \times f_{v,i} \times f_{T} \times f_{R} \times f_{W} \times f_{H} \times f_{S,i} $$
+Die Segment-spez. Faktoren werden pro Segment multipliziert.  
+Die Wetterfaktoren gelten für die gesamte Fahrt und werden einmalig global aufmultipliziert.
+
+**Zwischensumme (ohne Wetter):**
+
+$$E_{zwischen} = (E_{basis,Stadt} \times f_{v,Stadt} \times f_{H} \times f_{S,Stadt}) + (E_{basis,Land} \times f_{v,Land} \times f_{H} \times f_{S,Land}) + (E_{basis,AB} \times f_{v,AB} \times f_{H} \times f_{S,AB})$$
 
 **Gesamtenergieverbrauch:**
 
-$$E_{gesamt} = \sum_{i=1}^{n} E_i$$
+$$E_{gesamt} = E_{zwischen} \times f_T \times f_R \times f_W$$
 
-**Vereinfachte Formel (wenn alle Segmente ähnlich sind):**
+## 3. Energiebilanz und Ergebnis
 
-$$E_{gesamt} = E_{basis} \times f_{v,avg} \times f_{T} \times f_{R} \times f_{W} \times f_{H} \times f_{S,avg} $$
-
-wobei $f_{v,avg}$ und $f_{S,avg}$ Durchschnittswerte sind.
-## 5. Reichweitenberechnung
-
-beschreibt die Berechnung der verfügbaren Reichweite, z. B.
-
-- Verfügbare Energie (basierend auf Ladezustand)
-- Puffer-Energie (Reserve)
-- Nutzbare Energie
-- Maximale Reichweite
-- Vergleich: Erforderliche Energie vs. Verfügbare Energie
-
-### 5.1 Verfügbare Energie
-
-**Verfügbare Energie basierend auf Ladezustand:**
+### 3.1 Verfügbare, Puffer- und nutzbare Energie
 
 $$E_{verfügbar} = \frac{SoC}{100} \times E_{bat}$$
 
-wobei $SoC$ der State of Charge (Ladezustand in %) ist.
-
-### 5.2 Puffer-Energie (Reserve)
-
-Eine Reserve wird empfohlen, um Sicherheit zu gewährleisten.
-
-**Puffer-Energie:**
-
-$$E_{puffer} = 0.1 \times E_{bat}$$
-
-**Annahmen:**
-- Mindestens 10% der Batteriekapazität sollte als Reserve verbleiben
-- Dies entspricht typischen Herstellerempfehlungen
-
-### 5.3 Nutzbare Energie
-
-**Nutzbare Energie für die Fahrt:**
+$$E_{puffer} = 0,1 \times E_{bat}$$
 
 $$E_{nutzbar} = E_{verfügbar} - E_{puffer}$$
 
-### 5.4 Maximale Reichweite
+> **Annahme:** 10 % der Batteriekapazität verbleiben als Sicherheitsreserve.
 
-**Theoretische maximale Reichweite:**
+### 3.2 Fahrtmachbarkeit
 
-$$R_{max} = \frac{E_{nutzbar}}{V_{basis} / 100}$$
+$$\text{fahrtmoeglich} = \begin{cases}
+\text{true}  & \text{wenn } E_{gesamt} \leq E_{nutzbar} \\
+\text{false} & \text{wenn } E_{gesamt} > E_{nutzbar}
+\end{cases}$$
 
-**Realistische Reichweite unter aktuellen Bedingungen:**
+---
 
-$$R_{real} = \frac{E_{nutzbar}}{(V_{basis} \times f_{v,avg} \times f_{T} \times f_{R} \times f_{W} \times f_{H} \times f_{S,avg}) / 100}$$
+### 3.3 Ergebniswerte (BerechnungsErgebnis)
 
-### 5.5 Vergleich: Erforderliche vs. Verfügbare Energie
+$$SoC_{erforderlich} = \frac{E_{gesamt} + E_{puffer}}{E_{bat}} \times 100$$
 
-**Energiedefizit (falls Fahrt nicht möglich):**
-
-$$\Delta E = E_{gesamt} - E_{nutzbar}$$
-
-**Erforderlicher Ladezustand:**
-
-$$SoC_{erforderlich} = \frac{(E_{gesamt} + E_{puffer})}{E_{bat}} \times 100$$
-
-**Verbleibende Reserve (falls Fahrt möglich):**
+**Falls fahrt_moeglich = true:**
 
 $$E_{reserve} = E_{nutzbar} - E_{gesamt}$$
 
-## 6. Machbarkeit und Empfehlungen
+$$\Delta E = 0 \quad \text{(nicht benötigt)}$$
 
-beschreibt die Bewertung, ob eine Fahrt möglich ist und gibt Empfehlungen, z. B.
+**Falls fahrt_moeglich = false:**
 
-- Fahrt möglich: Ja/Nein
-- Sicherhehitsmarge
-- Notwendiger Ladezustand
-- Empfohlene Ladestationen
-- Fahrstil-Empfehlungen
-- Wetterwarnungen
-  
-  ### 6.1 Fahrtmachbarkeit
+$$\Delta E = E_{gesamt} - E_{nutzbar}$$
 
-**Bedingung für machbare Fahrt:**
-
-$$\text{Fahrt möglich} = \begin{cases}
-\text{Ja} & \text{wenn } E_{gesamt} \leq E_{nutzbar} \\
-\text{Nein} & \text{wenn } E_{gesamt} > E_{nutzbar}
-\end{cases}$$
-
-### 6.2 Sicherheitsmarge
-
-**Empfohlene Sicherheitsmarge:**
-
-$$E_{sicherheit} = 0.15 \times E_{nutzbar}$$
-
-**Sichere Fahrtmachbarkeit:**
-
-$$\text{Fahrt sicher möglich} = \begin{cases}
-\text{Ja} & \text{wenn } E_{gesamt} \leq (E_{nutzbar} - E_{sicherheit}) \\
-\text{Nein} & \text{sonst}
-\end{cases}$$
-
-### 6.3 Warnstufen
-
-| Bedingung                                                           | Status       | Empfehlung |
-|-----------                                                          |--------      |------------|
-| $E_{reserve} > 0.2 \times E_{nutzbar}$                              | Grün      | Fahrt problemlos möglich |
-| $0.05 \times E_{nutzbar} < E_{reserve} \leq 0.2 \times E_{nutzbar}$ | Gelb      | Fahrt möglich, aber Vorsicht |
-| $E_{reserve} \leq 0.05 \times E_{nutzbar}$                          | Rot       | Fahrt nicht empfohlen |
-| $E_{reserve} < 0$                                                   | Unmöglich | Fahrt nicht möglich |
-
-## 7. Fahrstil-Anpassung
-
-beschreibt den Einfluss des Fahrstils auf den Energieverbrauch, z. B.
-
-- Eco-Modus (weniger Verbrauch)
-- Normal-Modus (Standard-Verbrauch)
-- Sport-Modus (mehr Verbrauch)
-  
-### 7.1 Verbrauchsreduktion durch Fahrstil
-
-**Energieeinsparung durch Eco-Modus:**
-
-$$E_{Eco} = E_{Normal} \times 0.85$$
-
-$$\text{Einsparung} = E_{Normal} \times (1 - 0.85) = 0.15 \times E_{Normal}$$
-
-**Zusatzverbrauch durch Sport-Modus:**
-
-$$E_{Sport} = E_{Normal} \times 1.15$$
-
-$$\text{Zusatz} = E_{Normal} \times (1.15 - 1) = 0.15 \times E_{Normal}$$
-
-### 7.2 Reichweitenverbesserung durch Fahrstil
-
-**Maximale Reichweite im Eco-Modus:**
-
-$$R_{Eco} = \frac{E_{nutzbar}}{(V_{basis} \times 0.85 \times \text{andere Faktoren}) / 100}$$
-
-**Reichweitenreduktion im Sport-Modus:**
-
-$$R_{Sport} = \frac{E_{nutzbar}}{(V_{basis} \times 1.15 \times \text{andere Faktoren}) / 100}$$
+$$E_{reserve} = 0 \quad \text{(nicht benötigt)}$$
